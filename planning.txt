@@ -1,0 +1,12 @@
+Discord Coach Bot
+
+Main features:
+- add activities (`/addWorkout <sport> [distance] [movingTime] [averageHeartRate]`)
+- view activities (`/activities [sport]`)
+- weekly summaries (automatically & `/weekly [sport]`)
+- monthly summaries (automatically on first day 9am & `/monthly <month> [sport]`)
+- leaderboard (`/leaderboard`)
+- challenges
+- training plans
+- cycling and triathlon race notifications and results (`/race ...`)
+- Strava integration
