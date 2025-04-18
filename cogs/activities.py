@@ -1,54 +1,19 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import bot
-from discord.ui import *
-from discord import app_commands
+from discord.ui import View, Button
+from discord import app_commands, Interaction
 
-workouts = [
-    {
-        "user_id": 689438331783872558,
-        "sport": "swim",
-        "title": "ébresztő",
-        "distance": 1200,
-        "duration": "00:47:23",
-        "description": "hát + gyors piramis (uszony)",
-        "rpe": 6
-    },
-    {
-        "user_id": 689438331783872558,
-        "sport": "bike",
-        "title": "interval",
-        "distance": 35.17,
-        "duration": "01:20:54",
-        "description": "közös SZKSC",
-        "rpe": 8
-    },
-    {
-        "user_id": 689438331783872558,
-        "sport": "run",
-        "title": "pénteki hosszú beszélgetős",
-        "distance": 17.45,
-        "duration": "01:58:05",
-        "description": "+ sütizés",
-        "rpe": 5
-    },
-    {
-        "user_id": 689438331783872558,
-        "sport": "run",
-        "title": "tempo keddi",
-        "distance": 6.73,
-        "duration": "00:37:42",
-        "description": "huh... ez kemény volt",
-        "rpe": 7
-    }
-]
+from database import get_activities, delete_activity
+from models import Sport, Activity
+from utils import format_distance, start_time_to_string
 
 class GetActivitiesView(View):
     def __init__(self, ctx):
         super().__init__()
         self.ctx = ctx
 
-    def build_embed(self, sport: str, button_style: discord.ButtonStyle):
+    def build_embed(self, user_id, sport: Sport, button_style: discord.ButtonStyle):
         color_mapping = {
             discord.ButtonStyle.grey: discord.Color.light_grey(),
             discord.ButtonStyle.blurple: discord.Color.blurple(),
@@ -56,38 +21,48 @@ class GetActivitiesView(View):
             discord.ButtonStyle.red: discord.Color.red()
         }
 
+        if sport is not Sport.ALL:
+            activities = get_activities(user_id, sport)
+        else:
+            activities = get_activities(user_id)
+
+        print(activities)
+
         embed = discord.Embed(
-            title=f"Here are your {sport} workouts:",
-            description=f"**{sport}** workouts",
+            title=f"Here are your {sport.value} activities:",
+            description=f"**{sport.value.capitalize()}** activities",
             color=color_mapping[button_style]
         )
-        for i in range(0, len(workouts)):
-            if workouts[i]["sport"] == sport or sport == "all":
-                workout = workouts[i]
+        for activity in activities:
+            if activity.sport == sport or sport == Sport.ALL:
+                distance_str = format_distance(activity.distance, sport)
                 embed.add_field(
-                    name=f"{workout['title']} {'(' + workout['sport'] + ')' if sport == 'all' else ''}",
-                    value=f"{workout['distance']}{'m' if workout['sport'] == 'swim' else 'km'}, "
-                          f"{workout['duration']}, RPE: {workout['rpe']}, \n\"{workout['description']}\"",
+                    name=f"{activity.title} {'(' + activity.sport.value + ')' if sport == Sport.ALL else ''} at {start_time_to_string(activity.start_time)}",
+                    value=f"{distance_str}, {activity.duration}, RPE: {activity.rpe}, \n\"{activity.description}\"",
                     inline=False
                 )
         embed.set_footer(text="Great job so far. Keep it up!")
         return embed
 
-    @discord.ui.button(label="all", style=discord.ButtonStyle.grey)
+    @discord.ui.button(label=Sport.ALL.value, style=discord.ButtonStyle.grey)
     async def all_button(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.send_message(embed=self.build_embed("all", button.style))
+        embed = self.build_embed(interaction.user.id, Sport.ALL, button.style)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="swim", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label=Sport.SWIM.value, style=discord.ButtonStyle.blurple)
     async def swim_button(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.send_message(embed=self.build_embed("swim", button.style))
+        embed = self.build_embed(interaction.user.id, Sport.SWIM, button.style)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="bike", style=discord.ButtonStyle.green)
+    @discord.ui.button(label=Sport.BIKE.value, style=discord.ButtonStyle.green)
     async def bike_button(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.send_message(embed=self.build_embed("bike", button.style))
+        embed = self.build_embed(interaction.user.id, Sport.BIKE, button.style)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label="run", style=discord.ButtonStyle.red)
+    @discord.ui.button(label=Sport.RUN.value, style=discord.ButtonStyle.red)
     async def run_button(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.send_message(embed=self.build_embed("run", button.style))
+        embed = self.build_embed(interaction.user.id, Sport.RUN, button.style)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class Activities(commands.Cog):
     def __init__(self, bot):

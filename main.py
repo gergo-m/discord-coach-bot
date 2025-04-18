@@ -3,6 +3,7 @@ import discord
 import os
 from discord.ext import commands
 from dotenv import load_dotenv
+from database import init_db
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -14,8 +15,7 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-class Activity:
-    
+init_db()
 
 @bot.event
 async def on_ready():
@@ -29,7 +29,8 @@ async def on_ready():
 # Source: https://stackoverflow.com/questions/66662756/is-it-possible-to-split-a-discord-py-bot-across-multiple-files
 async def load():
     await bot.load_extension('cogs.guessing_game')
-    await bot.load_extension('cogs.add_workout')
+    await bot.load_extension('cogs.add_activity')
+    await bot.load_extension('cogs.delete_activity')
     await bot.load_extension('cogs.activities')
 
 if __name__ == '__main__':

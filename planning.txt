@@ -1,8 +1,13 @@
 Discord Coach Bot
 
 Main features:
-- add activities (`/addWorkout <sport> [distance] [movingTime] [averageHeartRate]`)
-- view activities (`/activities [sport]`)
+- add activities (`/addactivity`)
+- view activities (`/activities`)
+- delete activities (`/deleteactivity`)
+- add equipment (`/addequipment`)
+- view equipment (`/equipment`)
+- retire equipment (`/retireequipment`)
+- delete equipment (`/equipment`)
 - weekly summaries (automatically & `/weekly [sport]`)
 - monthly summaries (automatically on first day 9am & `/monthly <month> [sport]`)
 - leaderboard (`/leaderboard`)
