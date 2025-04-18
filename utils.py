@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from models import Sport, ActivityType
 
@@ -6,6 +6,20 @@ from models import Sport, ActivityType
 def format_distance(distance, sport: Sport):
     distance_str = f"{int(distance)}m" if sport == Sport.SWIM else f"{distance}km"
     return distance_str
+
+def format_duration(duration: timedelta) -> str:
+    total_seconds = duration.total_seconds()
+    hours = int(total_seconds // 3600)
+    minutes = int((total_seconds % 3600) // 60)
+    seconds = duration.seconds
+    parts = []
+    if hours > 0:
+        parts.append(f"{hours}h")
+    if minutes > 0:
+        parts.append(f"{minutes}m")
+    if seconds > 0:
+        parts.append(f"{seconds}s")
+    return " ".join(parts) if parts else "0m"
 
 def date_to_string(date):
     return date.isoformat()
