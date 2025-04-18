@@ -8,7 +8,7 @@ from discord.ui import View, Button, Modal, TextInput
 from typing import List
 
 from models import Activity, Sport, ActivityType, EquipmentType, Equipment
-from database import add_activity, get_activities, get_equipment
+from database import add_activity, get_activities, get_equipments
 from utils import format_distance, start_time_to_string, start_time_from_string, date_from_string, date_to_string, \
     is_type_appropriate, get_type_with_sport
 
@@ -17,20 +17,41 @@ class AddActivityView(View):
         super().__init__()
         self.ctx = ctx
 
-    @discord.ui.button(label="Swim", style=discord.ButtonStyle.blurple)
-    async def swim_button(self, interaction: discord.Interaction, button: Button):
-        modal = CoreInputModal(self.ctx, Sport.SWIM)
-        await interaction.response.send_modal(modal)
+        sport_config = {
+            Sport.SWIM: {
+                "style": discord.ButtonStyle.blurple,
+                "emoji": "🏊"
+            },
+            Sport.BIKE: {
+                "style": discord.ButtonStyle.green,
+                "emoji": "🚵"
+            },
+            Sport.RUN: {
+                "style": discord.ButtonStyle.red,
+                "emoji": "🏃"
+            }
+        }
 
-    @discord.ui.button(label="Bike", style=discord.ButtonStyle.green)
-    async def bike_button(self, interaction: discord.Interaction, button: Button):
-        modal = CoreInputModal(self.ctx, Sport.BIKE)
-        await interaction.response.send_modal(modal)
+        for sport in Sport:
+            if sport == Sport.ALL:
+                continue
 
-    @discord.ui.button(label="Run", style=discord.ButtonStyle.red)
-    async def run_button(self, interaction: discord.Interaction, button: Button):
-        modal = CoreInputModal(self.ctx, Sport.RUN)
+            config = sport_config.get(sport, {})
+            self.add_item(
+                Button(
+                    label=sport.value.capitalize(),
+                    style=config.get("style", discord.ButtonStyle.secondary),
+                    emoji=config.get("emoji", ""),
+                    custom_id=f"sport_{sport.value}",
+                )
+            )
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        sport_value = interaction.data["custom_id"].split("_")[1]
+        sport = Sport(sport_value)
+        modal = CoreInputModal(self.ctx, sport)
         await interaction.response.send_modal(modal)
+        return False
 
 
 class CoreInputModal(Modal):
@@ -308,7 +329,7 @@ class RPEView(View):
         rpe = int(interaction.data["custom_id"].split("_")[1])
         self.activity.rpe = rpe
 
-        user_equipment = get_equipment(interaction.user.id)
+        user_equipment = get_equipments(interaction.user.id)
 
         if not user_equipment:
             add_activity(self.activity)

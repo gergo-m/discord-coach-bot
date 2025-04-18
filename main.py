@@ -32,6 +32,8 @@ async def load():
     await bot.load_extension('cogs.add_activity')
     await bot.load_extension('cogs.delete_activity')
     await bot.load_extension('cogs.activities')
+    await bot.load_extension('cogs.add_equipment')
+    await bot.load_extension('cogs.equipments')
 
 if __name__ == '__main__':
     import asyncio

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from models import Sport, ActivityType
+from models import Sport, ActivityType, EquipmentType
 
 
 def format_distance(distance, sport: Sport):
@@ -33,15 +33,21 @@ def start_time_to_string(start_time):
 def start_time_from_string(start_time_str):
     return datetime.strptime(start_time_str, "%H:%M").time()
 
-def is_type_appropriate(type: ActivityType, sport: Sport):
+def is_type_appropriate(type: ActivityType, ch_sport: Sport):
     has_sport = False
     has_spec_sport = False
-    for sport_name in Sport:
-        if sport_name.name.lower() in type.name.lower():
+    for sport in Sport:
+        if sport.name.lower() in type.name.lower():
             has_sport = True
-            if sport_name.name.lower() == sport.name.lower():
+            if sport.name.lower() == ch_sport.name.lower():
                 has_spec_sport = True
     return has_spec_sport or not has_sport
+
+def is_equipment_appropriate(type: EquipmentType, sport: Sport):
+    matches_sport = False
+    if sport.name.lower() in type.name.lower():
+        matches_sport = True
+    return matches_sport
 
 def get_type_with_sport(type: ActivityType, sport: Sport, capitalize: bool):
     return type.value.capitalize().replace("Activity", sport.value.capitalize()) if capitalize else type.value.replace("activity", sport.value)

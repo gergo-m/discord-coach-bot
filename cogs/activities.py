@@ -67,7 +67,8 @@ class GetActivitiesView(View):
 
         if not activities:
             embed.description = "No activities found. Time to get moving! 🏊🚵🏃"
-        embed.set_footer(text="Great job so far. Keep it up! 💪")
+        else:
+            embed.set_footer(text="Great job so far. Keep it up! 💪")
         return embed
 
     @discord.ui.button(label=Sport.ALL.value.capitalize(), style=discord.ButtonStyle.grey, emoji="📚")

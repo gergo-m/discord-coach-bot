@@ -21,17 +21,17 @@ class ActivityType(Enum):
     POOL_SWIM = "pool activity"
 
 class EquipmentType(Enum):
-    RUN_SHOES = "running shoes"
+    SWIM_GOGGLES = "goggles"
+    SWIM_CAP = "cap"
+    SWIMSUIT = "swimsuit"
+    SWIM_WETSUIT = "wetsuit"
+    BIKE_HELMET = "helmet"
+    BIKE_SHOES = "bike shoes"
     ROAD_BIKE = "road bike"
     TT_BIKE = "TT bike"
     GRAVEL_BIKE = "gravel bike"
     MTB_BIKE = "mountain bike"
-    BIKE_SHOES = "bike shoes"
-    BIKE_HELMET = "helmet"
-    SWIM_GOGGLES = "goggles"
-    SWIM_CAP = "cap"
-    SWIMSUIT = "swimsuit"
-    WETSUIT = "wetsuit"
+    RUN_SHOES = "running shoes"
 
 class PaceUnit(Enum):
     SWIM = "/100m"
@@ -41,12 +41,14 @@ class PaceUnit(Enum):
 
 @dataclass
 class Equipment:
+    user_id: int
     name: str
     sport: Sport
     type: EquipmentType
-    distance_used: float = 0.0
-    times_used: int = 0
-    retired: bool = False
+    distance_used: float = field(default=0.0)
+    time_used: timedelta = field(default=timedelta(hours=0, minutes=0, seconds=0))
+    times_used: int = field(default=0)
+    retired: bool = field(default=False)
     id: int = field(default=None)
 
 @dataclass

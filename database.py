@@ -37,6 +37,7 @@ def init_db():
                     sport TEXT,
                     type TEXT,
                     distance_used REAL,
+                    time_used TEXT,
                     times_used INTEGER,
                     retired BOOLEAN
                 )''')
@@ -166,21 +167,68 @@ def delete_activity(activity_id: int):
     conn.commit()
     conn.close()
 
-def get_equipment(user_id: int) -> List[Equipment]:
+def add_equipment(equipment: Equipment):
+    conn = sqlite3.connect('discord_bot.db')
+    c = conn.cursor()
+
+    time_used_seconds = int(equipment.time_used.total_seconds())
+    hours, remainder = divmod(time_used_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    time_used_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+
+    c.execute('''INSERT INTO equipment (
+                        user_id, name, sport, type, distance_used,
+                        time_used, times_used, retired
+                    )
+                VALUES (?, ?, ?, ?, ?,
+                        ?, ?, ?)''',
+            (
+                equipment.user_id,
+                equipment.name,
+                equipment.sport.value,
+                equipment.type.value,
+                equipment.distance_used,
+                time_used_str,
+                equipment.times_used,
+                equipment.retired
+            ))
+    conn.commit()
+    conn.close()
+
+
+def get_equipments(user_id: int, sport=None) -> List[Equipment]:
     conn = sqlite3.connect("discord_bot.db")
     c = conn.cursor()
-    c.execute("SELECT * FROM equipment WHERE user_id = ?", (user_id,))
+    if sport is not None:
+        c.execute(
+            "SELECT * FROM equipment WHERE user_id = ? AND sport = ?",
+            (user_id, sport.value)
+        )
+    else:
+        c.execute(
+            "SELECT * FROM equipment WHERE user_id = ?",
+            (user_id,)
+        )
     rows = c.fetchall()
     conn.close()
 
-    return [
-        Equipment(
+    equipments = []
+
+    for row in rows:
+        h, m, s = map(int, row[6].split(':'))
+        time_used_val = timedelta(hours=h, minutes=m, seconds=s)
+
+        equipment = Equipment(
             id=row[0],
+            user_id=row[1],
             name=row[2],
             sport=Sport(row[3]),
             type=EquipmentType(row[4]),
             distance_used=row[5],
-            times_used=row[6],
-            retired=bool(row[7])
-        ) for row in rows
-    ]
+            time_used=time_used_val,
+            times_used=row[7],
+            retired=bool(row[8])
+        )
+        equipments.append(equipment)
+
+    return equipments
