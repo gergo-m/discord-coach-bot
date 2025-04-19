@@ -5,7 +5,7 @@ from discord.ui import View, Button
 
 from database import get_equipments
 from models import Sport
-from utils import format_distance, format_duration
+from utils import format_distance, format_duration, date_to_string, date_from_string
 
 
 class GetEquipmentsView(View):
@@ -59,14 +59,17 @@ class GetEquipmentsView(View):
         )
         for equipment in equipments:
             value_lines = [
+                f"**Model:** {equipment.model}",
                 f"**Sport:** {equipment.sport.value}",
                 f"**Distance:** {equipment.distance_used}km",
                 f"**Time used:** {format_duration(equipment.time_used)}",
-                f"**Times used:** {equipment.times_used}"
+                f"**Times used:** {equipment.times_used}",
+                f"**Bought on:** {date_to_string(equipment.bought_on)}",
+                f"Added: {date_to_string(equipment.added_at)}",
             ]
 
             if equipment.retired:
-                value_lines.append(f"🔒 RETIRED")
+                value_lines.append(f"🔒 **RETIRED** on {date_to_string(equipment.retired_on)}")
 
             embed.add_field(
                 name=f"📝 {equipment.name} ({equipment.type.value})",

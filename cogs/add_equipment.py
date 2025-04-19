@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import discord
 from discord import Interaction, app_commands
 from discord.ext import commands
@@ -5,7 +7,7 @@ from discord.ui import View, Button, Modal, TextInput
 
 from database import add_equipment
 from models import Equipment, EquipmentType, Sport
-from utils import is_equipment_appropriate
+from utils import is_equipment_appropriate, date_from_string, date_to_string
 
 
 class SelectSportView(View):
@@ -81,18 +83,34 @@ class EquipmentDetailsModal(Modal):
         self.sport = sport
 
         self.name_input = TextInput(
-            label="📝 Name",
+            label="🎖️ Name",
             placeholder="Red bike? Trusty shoes?",
+        )
+        self.model_input = TextInput(
+            label="📝 Model",
+            placeholder="Bianchi Via Nirone 7? ASICS GT-1200?",
+        )
+        self.date_input = TextInput(
+            label="🗓️ When did you buy it? (yyyy-mm-dd)",
+            placeholder="Tip: leave empty for 'today'",
+            required=False
         )
 
         self.add_item(self.name_input)
+        self.add_item(self.model_input)
+        self.add_item(self.date_input)
 
     async def on_submit(self, interaction: discord.Interaction):
+        # TODO validate date
+        date = date_from_string(self.date_input.value) if self.date_input.value else datetime.now().date()
+
         equipment = Equipment(
             user_id=interaction.user.id,
             name=self.name_input.value,
+            model=self.model_input.value,
             sport=self.sport,
-            type=self.equipment_type
+            type=self.equipment_type,
+            bought_on=date
         )
 
         embed = discord.Embed(
@@ -131,8 +149,8 @@ class EquipmentDetailsModal(Modal):
             inline=True
         )
         embed.add_field(
-            name="Retired?",
-            value=f"{equipment.retired}",
+            name="Bought on",
+            value=f"{date_to_string(equipment.bought_on)}",
             inline=True
         )
 

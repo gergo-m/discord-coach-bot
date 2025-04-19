@@ -34,12 +34,17 @@ def init_db():
                     id INTEGER PRIMARY KEY,
                     user_id INTEGER,
                     name TEXT,
+                    model TEXT,
                     sport TEXT,
                     type TEXT,
                     distance_used REAL,
                     time_used TEXT,
                     times_used INTEGER,
-                    retired BOOLEAN
+                    retired BOOLEAN,
+                    bought_on TEXT,
+                    retired_on TEXT,
+                    added_at TEXT,
+                    updated_at TEXT
                 )''')
     c.execute('''CREATE TABLE IF NOT EXISTS activity_equipment (
                     activity_id INTEGER,
@@ -169,66 +174,113 @@ def delete_activity(activity_id: int):
 
 def add_equipment(equipment: Equipment):
     conn = sqlite3.connect('discord_bot.db')
-    c = conn.cursor()
+    try:
+        c = conn.cursor()
 
-    time_used_seconds = int(equipment.time_used.total_seconds())
-    hours, remainder = divmod(time_used_seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    time_used_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+        time_used_seconds = int(equipment.time_used.total_seconds())
+        hours, remainder = divmod(time_used_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        time_used_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+        bought_on_str = date_to_string(equipment.bought_on)
+        retired_on_str = date_to_string(equipment.retired_on)
+        added_at_str = date_to_string(equipment.added_at)
+        updated_at_str = date_to_string(equipment.updated_at)
 
-    c.execute('''INSERT INTO equipment (
-                        user_id, name, sport, type, distance_used,
-                        time_used, times_used, retired
-                    )
-                VALUES (?, ?, ?, ?, ?,
-                        ?, ?, ?)''',
-            (
-                equipment.user_id,
-                equipment.name,
-                equipment.sport.value,
-                equipment.type.value,
-                equipment.distance_used,
-                time_used_str,
-                equipment.times_used,
-                equipment.retired
-            ))
-    conn.commit()
-    conn.close()
+        c.execute('''INSERT INTO equipment (
+                            user_id, name, model, sport, type,
+                            distance_used, time_used, times_used, retired,
+                            bought_on, retired_on, added_at, updated_at
+                        )
+                    VALUES (?, ?, ?, ?, ?,
+                            ?, ?, ?, ?,
+                            ?, ?, ?, ?)''',
+                (
+                    equipment.user_id,
+                    equipment.name,
+                    equipment.model,
+                    equipment.sport.value,
+                    equipment.type.value,
+                    equipment.distance_used,
+                    time_used_str,
+                    equipment.times_used,
+                    equipment.retired,
+                    bought_on_str,
+                    retired_on_str,
+                    added_at_str,
+                    updated_at_str
+                ))
+        conn.commit()
+    finally:
+        conn.close()
 
 
 def get_equipments(user_id: int, sport=None) -> List[Equipment]:
     conn = sqlite3.connect("discord_bot.db")
+    try:
+        c = conn.cursor()
+        if sport is not None:
+            c.execute(
+                "SELECT * FROM equipment WHERE user_id = ? AND sport = ?",
+                (user_id, sport.value)
+            )
+        else:
+            c.execute(
+                "SELECT * FROM equipment WHERE user_id = ?",
+                (user_id,)
+            )
+        rows = c.fetchall()
+        equipments = []
+
+        for row in rows:
+            h, m, s = map(int, row[7].split(':'))
+            time_used_val = timedelta(hours=h, minutes=m, seconds=s)
+            bought_on_val = date_from_string(row[10])
+            retired_on_val = date_from_string(row[11])
+            added_at_val = datetime.fromisoformat(row[12]) if row[12] else None
+            updated_at_val = datetime.fromisoformat(row[13]) if row[13] else None
+
+            equipment = Equipment(
+                id=row[0],
+                user_id=row[1],
+                name=row[2],
+                model=row[3],
+                sport=Sport(row[4]),
+                type=EquipmentType(row[5]),
+                distance_used=row[6],
+                time_used=time_used_val,
+                times_used=row[8],
+                retired=bool(row[9]),
+                bought_on=bought_on_val,
+                retired_on=retired_on_val,
+                added_at=added_at_val,
+                updated_at=updated_at_val
+            )
+            equipments.append(equipment)
+
+        return equipments
+    finally:
+        conn.close()
+
+def delete_equipment(equipment_id: int):
+    conn = sqlite3.connect("discord_bot.db")
     c = conn.cursor()
-    if sport is not None:
-        c.execute(
-            "SELECT * FROM equipment WHERE user_id = ? AND sport = ?",
-            (user_id, sport.value)
-        )
-    else:
-        c.execute(
-            "SELECT * FROM equipment WHERE user_id = ?",
-            (user_id,)
-        )
-    rows = c.fetchall()
+    c.execute("DELETE FROM equipment WHERE id = ?", (equipment_id,))
+    conn.commit()
     conn.close()
 
-    equipments = []
+def retire_equipment(equipment_id: int):
+    conn = sqlite3.connect("discord_bot.db")
+    try:
+        c = conn.cursor()
+        current_date = date_to_string(datetime.now().date())
+        current_datetime = date_to_string(datetime.now())
 
-    for row in rows:
-        h, m, s = map(int, row[6].split(':'))
-        time_used_val = timedelta(hours=h, minutes=m, seconds=s)
-
-        equipment = Equipment(
-            id=row[0],
-            user_id=row[1],
-            name=row[2],
-            sport=Sport(row[3]),
-            type=EquipmentType(row[4]),
-            distance_used=row[5],
-            time_used=time_used_val,
-            times_used=row[7],
-            retired=bool(row[8])
-        )
-        equipments.append(equipment)
-
-    return equipments
+        c.execute('''UPDATE equipment
+                        SET retired = ?,
+                            retired_on = ?,
+                            updated_at = ?
+                        WHERE id = ?''',
+                  (True, current_date, current_datetime, equipment_id))
+        conn.commit()
+    finally:
+        conn.close()

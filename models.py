@@ -43,6 +43,7 @@ class PaceUnit(Enum):
 class Equipment:
     user_id: int
     name: str
+    model: str
     sport: Sport
     type: EquipmentType
     distance_used: float = field(default=0.0)
@@ -50,6 +51,11 @@ class Equipment:
     times_used: int = field(default=0)
     retired: bool = field(default=False)
     id: int = field(default=None)
+    bought_on: date = field(default=datetime.now().date())
+    retired_on: date = field(default=datetime.now().date())
+    added_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
+
 
 @dataclass
 class Activity:

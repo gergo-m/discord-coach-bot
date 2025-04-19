@@ -17,10 +17,13 @@ class ConfirmDeleteView(discord.ui.View):
         super().__init__(timeout=30)
         self.activity_id = activity_id
 
-    @discord.ui.button(label="✅ Confirm", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="✅ Confirm", style=discord.ButtonStyle.grey)
     async def confirm(self, interaction, button):
         delete_activity(self.activity_id)
-        await interaction.response.edit_message(content="✅ Activity deleted.", view=None)
+        await interaction.response.edit_message(
+            content="✅ Activity deleted.",
+            view=None
+        )
         self.stop()
 
     @discord.ui.button(label="❌ Cancel", style=discord.ButtonStyle.grey)
