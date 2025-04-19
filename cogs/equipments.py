@@ -5,7 +5,7 @@ from discord.ui import View, Button
 
 from database import get_equipments
 from models import Sport
-from utils import format_distance, format_duration, date_to_string, date_from_string
+from utils import format_distance, format_duration, date_to_string, date_from_string, format_timedelta
 
 
 class GetEquipmentsView(View):

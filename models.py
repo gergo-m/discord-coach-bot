@@ -32,6 +32,7 @@ class EquipmentType(Enum):
     GRAVEL_BIKE = "gravel bike"
     MTB_BIKE = "mountain bike"
     RUN_SHOES = "running shoes"
+    RUN_WATCH = "running watch"
 
 class PaceUnit(Enum):
     SWIM = "/100m"

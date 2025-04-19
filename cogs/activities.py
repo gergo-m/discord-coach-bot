@@ -59,6 +59,9 @@ class GetActivitiesView(View):
             if activity.description:
                 value_lines.append(f"\n📝 **Description:**\n{activity.description}")
 
+            equipment_str = ", ".join([f"{eq.name} ({eq.type.value})" for eq in activity.equipment_used]) or "None"
+            value_lines.append(f"\n🔧 **Equipment:** {equipment_str}")
+
             embed.add_field(
                 name=f"🏅 {activity.title} ({activity.sport.value.capitalize()})" if sport == Sport.ALL else f"🏅 {activity.title}",
                 value="\n".join(value_lines),

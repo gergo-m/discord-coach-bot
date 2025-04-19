@@ -373,7 +373,9 @@ class EquipmentSelectView(View):
     async def interaction_check(self, interaction: discord.Interaction):
         if self.children:
             selected_ids = [int(id_str) for id_str in self.children[0].values]
-            self.activity.equipment_used = selected_ids
+            self.activity.equipment_used = [
+                eq for eq in get_equipments(interaction.user.id) if eq.id in selected_ids
+            ]
 
         add_activity(self.activity)
         await self.send_confirmation(interaction)
@@ -391,7 +393,7 @@ def activity_saved_embed(activity: Activity):
     equipment_str = ""
     if hasattr(activity, "equipment_used") and activity.equipment_used:
         equipment_list = getattr(activity, "equipment_used", [])
-        equipment_str = ", ".join(str(eq) for eq in equipment_list)
+        equipment_str = ", ".join([f"{eq.name} ({eq.type.value})" for eq in activity.equipment_used]) or "None"
 
     embed = discord.Embed(
         title="✅ Activity Saved!",
