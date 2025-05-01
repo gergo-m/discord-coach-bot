@@ -45,7 +45,7 @@ class GetActivitiesView(View):
             if activity.max_heart_rate > 0:
                 value_lines.append(f"**Max HR:** {activity.max_heart_rate} bpm")
 
-            value_lines.append(f"**RPE:** {activity.rpe}/10\n")
+            value_lines.append(f"**RPE:** {activity.rpe}/10\n---")
 
             if activity.location:
                 value_lines.append(f"**Location:** {activity.location}")
@@ -57,14 +57,15 @@ class GetActivitiesView(View):
                 value_lines.append(f"**Feelings:** {activity.feelings}")
 
             if activity.description:
-                value_lines.append(f"\n**Description:**\n{activity.description}")
+                value_lines.append(f"**Description:**\n{activity.description}\n---")
 
             equipment_str = ", ".join([f"{eq.name} ({eq.type.value})" for eq in activity.equipment_used]) or "None"
-            value_lines.append(f"\n🔧 **Equipment:** {equipment_str}")
+            if equipment_str != "None":
+                value_lines.append(f"🔧 **Equipment:** {equipment_str}\n---")
 
             embed.add_field(
                 name=f"{SPORT_EMOJI[activity.sport]} {activity.title}",
-                value="\n".join(value_lines),
+                value="\n".join(value_lines) + "-----------------",
                 inline=True
             )
 
