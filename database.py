@@ -330,7 +330,7 @@ def add_equipment(equipment: Equipment):
         conn.close()
 
 
-def get_equipments(user_id: int, sport=None) -> List[Equipment]:
+def get_equipments(user_id: int, sport=None) -> List[Equipment] | None:
     conn = sqlite3.connect("discord_bot.db")
     try:
         c = conn.cursor()
@@ -373,6 +373,35 @@ def get_equipments(user_id: int, sport=None) -> List[Equipment]:
             equipments.append(equipment)
 
         return equipments
+    finally:
+        conn.close()
+
+
+def get_equipment_by_id(equipment_id: int, user_id: int) -> Equipment | None:
+    conn = sqlite3.connect('discord_bot.db')
+    try:
+        c = conn.cursor()
+        c.execute("SELECT * FROM equipment WHERE id = ? AND user_id = ?",
+                  (equipment_id, user_id))
+        row = c.fetchone()
+        if row:
+            return Equipment(
+                id=row[0],
+                user_id=row[1],
+                name=row[2],
+                model=row[3],
+                sport=Sport(row[4]),
+                type=EquipmentType(row[5]),
+                distance_used=row[6],
+                time_used=safe_parse_timedelta(row[7]),
+                times_used=row[8],
+                retired=bool(row[9]),
+                bought_on=date_from_string(row[10]),
+                retired_on=date_from_string(row[11]),
+                added_at=datetime.fromisoformat(row[12]),
+                updated_at=datetime.fromisoformat(row[13])
+            )
+        return None
     finally:
         conn.close()
 

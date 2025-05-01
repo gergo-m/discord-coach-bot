@@ -65,7 +65,7 @@ class GetActivitiesView(View):
 
             embed.add_field(
                 name=f"{SPORT_EMOJI[activity.sport]} {activity.title}",
-                value="\n".join(value_lines) + "-----------------",
+                value="\n".join(value_lines) + "------------",
                 inline=True
             )
 

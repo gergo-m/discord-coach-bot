@@ -13,7 +13,7 @@ intents.messages = True
 intents.members = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='/', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 init_db()
 
@@ -37,6 +37,7 @@ async def load():
     await bot.load_extension('cogs.retire_equipment')
     await bot.load_extension('cogs.unretire_equipment')
     await bot.load_extension('cogs.equipment')
+    await bot.load_extension('cogs.quickadd')
 
 if __name__ == '__main__':
     import asyncio
