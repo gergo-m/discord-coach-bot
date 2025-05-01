@@ -80,4 +80,5 @@ def is_equipment_appropriate(type: EquipmentType, sport: Sport):
     return matches_sport
 
 def get_type_with_sport(type: ActivityType, sport: Sport, capitalize: bool):
-    return type.value.capitalize().replace("Activity", sport.value.capitalize()) if capitalize else type.value.replace("activity", sport.value)
+    result = type.value.replace("activity", sport.value)
+    return result.title() if capitalize else result
