@@ -71,7 +71,6 @@ class CoreInputModal(Modal):
                 "⏰ Please use `hh:mm` 24-hour format for start time (e.g. 05:07, 16:47)",
                 ephemeral=True
             )
-        # TODO validate date
 
         date = date_from_string(self.date_input.value) if self.date_input.value else datetime.now().date()
         start_time = start_time_from_string(self.start_time_input.value)
@@ -314,7 +313,7 @@ class RPEView(View):
         rpe = int(interaction.data["custom_id"].split("_")[1])
         self.activity.rpe = rpe
 
-        user_equipment = get_equipments(interaction.user.id)
+        user_equipment = get_equipments(interaction.user.id, self.activity.sport)
 
         if not user_equipment:
             add_activity(self.activity)
