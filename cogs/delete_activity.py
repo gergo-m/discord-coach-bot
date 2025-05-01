@@ -68,7 +68,7 @@ class DeleteActivity(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="deleteactivity", description="Delete one of your activities")
+    @app_commands.command(name="delete_activity", description="Delete one of your activities")
     async def deleteactivity(self, interaction: Interaction):
         activities = get_activities(interaction.user.id)
 

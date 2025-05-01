@@ -7,7 +7,7 @@ from discord.ui import View, Button, Modal, TextInput
 
 from database import add_equipment
 from models import Equipment, EquipmentType, Sport
-from utils import is_equipment_appropriate, date_from_string, date_to_string
+from utils import is_equipment_appropriate, date_from_string, date_to_string, SPORT_BUTTON_STYLE, SPORT_EMOJI
 
 
 class SelectSportView(View):
@@ -15,31 +15,15 @@ class SelectSportView(View):
         super().__init__()
         self.ctx = ctx
 
-        sport_config = {
-            Sport.SWIM: {
-                "style": discord.ButtonStyle.blurple,
-                "emoji": "🏊"
-            },
-            Sport.BIKE: {
-                "style": discord.ButtonStyle.green,
-                "emoji": "🚵"
-            },
-            Sport.RUN: {
-                "style": discord.ButtonStyle.red,
-                "emoji": "🏃"
-            }
-        }
-
         for sport in Sport:
             if sport == Sport.ALL:
                 continue
 
-            config = sport_config.get(sport, {})
             self.add_item(
                 Button(
                     label=sport.value.capitalize(),
-                    style=config.get("style", discord.ButtonStyle.secondary),
-                    emoji=config.get("emoji", ""),
+                    style=SPORT_BUTTON_STYLE[sport],
+                    emoji=SPORT_EMOJI[sport],
                     custom_id=f"sport_{sport.value}",
                 )
             )
@@ -101,8 +85,15 @@ class EquipmentDetailsModal(Modal):
         self.add_item(self.date_input)
 
     async def on_submit(self, interaction: discord.Interaction):
-        # TODO validate date
         date = date_from_string(self.date_input.value) if self.date_input.value else datetime.now().date()
+
+        if self.date_input.value:
+            bought_on = date_from_string(self.date_input.value)
+            if bought_on is None:
+                return await interaction.response.send_message(
+                    "❌ Invalid date format. Use YYYY-MM-DD (e.g. 2024-12-31)",
+                    ephemeral=True
+                )
 
         equipment = Equipment(
             user_id=interaction.user.id,
@@ -161,7 +152,7 @@ class AddEquipment(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="addequipment", description="Add an equipment")
+    @app_commands.command(name="add_equipment", description="Add an equipment")
     async def add_equipment(self, interaction: Interaction):
         view = SelectSportView(interaction.context)
         await interaction.response.send_message("Which sport is this equipment used in?", view=view)

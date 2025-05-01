@@ -5,7 +5,8 @@ from discord.ui import View, Button
 
 from database import get_equipments
 from models import Sport
-from utils import format_distance, format_duration, date_to_string, date_from_string, format_timedelta
+from utils import format_distance, format_duration, date_to_string, date_from_string, format_timedelta, SPORT_EMOJI, \
+    SPORT_BUTTON_STYLE
 
 
 class GetEquipmentsView(View):
@@ -13,32 +14,12 @@ class GetEquipmentsView(View):
         super().__init__()
         self.ctx = ctx
 
-        sport_config = {
-            Sport.ALL: {
-                "style": discord.ButtonStyle.grey,
-                "emoji": "🏅"
-            },
-            Sport.SWIM: {
-                "style": discord.ButtonStyle.blurple,
-                "emoji": "🏊"
-            },
-            Sport.BIKE: {
-                "style": discord.ButtonStyle.green,
-                "emoji": "🚵"
-            },
-            Sport.RUN: {
-                "style": discord.ButtonStyle.red,
-                "emoji": "🏃"
-            }
-        }
-
         for sport in Sport:
-            config = sport_config.get(sport, {})
             self.add_item(
                 Button(
                     label=sport.value.capitalize(),
-                    style=config.get("style", discord.ButtonStyle.secondary),
-                    emoji=config.get("emoji", ""),
+                    style=SPORT_BUTTON_STYLE[sport],
+                    emoji=SPORT_EMOJI[sport],
                     custom_id=f"sport_{sport.value}",
                 )
             )
@@ -54,7 +35,7 @@ class GetEquipmentsView(View):
         equipments = get_equipments(user_id, sport if sport != Sport.ALL else None)
 
         embed = discord.Embed(
-            title=f"🔨 {sport.value.capitalize() if sport != Sport.ALL else 'All'} Equipments",
+            title=f"🔨 {sport.value.capitalize() if sport != Sport.ALL else 'All'} Equipment",
             color=color_mapping[button_style]
         )
         for equipment in equipments:
@@ -65,14 +46,14 @@ class GetEquipmentsView(View):
                 f"**Time used:** {format_duration(equipment.time_used)}",
                 f"**Times used:** {equipment.times_used}",
                 f"**Bought on:** {date_to_string(equipment.bought_on)}",
-                f"Added: {date_to_string(equipment.added_at)}",
+                f"Added: {equipment.added_at.strftime('%Y-%m-%d %H:%M:%S')}",
             ]
 
             if equipment.retired:
                 value_lines.append(f"🔒 **RETIRED** on {date_to_string(equipment.retired_on)}")
 
             embed.add_field(
-                name=f"📝 {equipment.name} ({equipment.type.value})",
+                name=f"{SPORT_EMOJI[equipment.sport]} {equipment.name} ({equipment.type.value})",
                 value="\n".join(value_lines),
                 inline=True
             )
@@ -95,7 +76,7 @@ class Equipments(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="equipments", description="View your added equipments")
+    @app_commands.command(name="equipment", description="View your added equipment")
     async def equipments(self, interaction: discord.Interaction):
         view = GetEquipmentsView(interaction.context)
         await interaction.response.send_message(

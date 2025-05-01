@@ -1,36 +1,19 @@
-import discord.ui
-from discord import Interaction, app_commands
+import discord
+from discord import app_commands, Interaction
 from discord.ext import commands
-from discord.ui import Select
+from discord.ui import View, Select
 
-from database import get_equipments, retire_equipment, delete_equipment
+from database import retire_equipment, get_equipments
 from utils import format_duration
 
 
-class ConfirmDeleteView(discord.ui.View):
+class ConfirmRetireView(View):
     def __init__(self, equipment_id):
         super().__init__(timeout=30)
         self.equipment_id = equipment_id
 
     @discord.ui.button(label="✅ Confirm", style=discord.ButtonStyle.grey)
     async def confirm(self, interaction, button):
-        delete_equipment(self.equipment_id)
-        await interaction.response.edit_message(
-            content="✅ Equipment deleted.",
-            view=None
-        )
-        self.stop()
-
-    @discord.ui.button(label="❌ Cancel", style=discord.ButtonStyle.grey)
-    async def cancel(self, interaction, button):
-        await interaction.response.edit_message(
-            content="❌ Deletion cancelled.",
-            view=None
-        )
-        self.stop()
-
-    @discord.ui.button(label="⚠️ Retire instead!", style=discord.ButtonStyle.green)
-    async def retire(self, interaction, button):
         retire_equipment(self.equipment_id)
         await interaction.response.edit_message(
             content="✅ Equipment retired.",
@@ -38,7 +21,15 @@ class ConfirmDeleteView(discord.ui.View):
         )
         self.stop()
 
-class DeleteEquipmentSelect(Select):
+    @discord.ui.button(label="❌ Cancel", style=discord.ButtonStyle.grey)
+    async def cancel(self, interaction, button):
+        await interaction.response.edit_message(
+            content="❌ Retirement cancelled.",
+            view=None
+        )
+        self.stop()
+
+class RetireEquipmentSelect(Select):
     def __init__(self, equipments):
         options = []
         for equipment in equipments:
@@ -52,47 +43,48 @@ class DeleteEquipmentSelect(Select):
                 )
             )
         super().__init__(
-            placeholder="Select an equipment to delete...",
+            placeholder="Select an equipment to retire...",
             options=options,
             min_values=1,
             max_values=1
         )
 
-    async def callback(self, interaction: Interaction):
+    async def callback(self, interaction):
         equipment_id = int(self.values[0])
         await interaction.response.send_message(
-            content="Are you sure you want to delete this equipment?\nYou can **retired it** instead!",
-            view=ConfirmDeleteView(equipment_id),
+            content="Are you sure you want to retire this equipment?",
+            view=ConfirmRetireView(equipment_id),
             ephemeral=True
         )
 
-class DeleteEquipmentView(discord.ui.View):
+class RetireEquipmentView(View):
     def __init__(self, equipments):
         super().__init__(timeout=30)
-        self.add_item(DeleteEquipmentSelect(equipments))
+        self.add_item(RetireEquipmentSelect(equipments))
 
-class DeleteEquipment(commands.Cog):
+class RetireEquipment(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="delete_equipment", description="Delete one of your equipment!")
-    async def deleteequipment(self, interaction: Interaction):
-        equipments = get_equipments(interaction.user.id)
+    @app_commands.command(name="retire_equipment", description="Retire one of your equipment!")
+    async def retireequipment(self, interaction: Interaction):
+        equipments = [e for e in get_equipments(interaction.user.id) if not e.retired]
 
         if not equipments:
             await interaction.response.send_message(
-                "You have no equipment to delete!",
+                "You have no equipment to retire!",
                 ephemeral=True
             )
             return
 
-        view = DeleteEquipmentView(equipments)
+        view = RetireEquipmentView(equipments)
         await interaction.response.send_message(
-            "Which equipment would you like to delete?",
+            "Which equipment would you like to retire?",
             view=view,
             ephemeral=True
         )
 
+
 async def setup(bot):
-    await bot.add_cog(DeleteEquipment(bot))
+    await bot.add_cog(RetireEquipment(bot))
 

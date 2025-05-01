@@ -3,11 +3,26 @@ from datetime import timedelta, time, date, datetime
 from enum import Enum
 from typing import List
 
+import discord
+
+
 class Sport(Enum):
     ALL = "all"
     SWIM = "swim"
     BIKE = "bike"
     RUN = "run"
+
+class SportEmoji(Enum):
+    ALL = "📚"
+    SWIM = "🏊"
+    BIKE = "🚴‍♂️"
+    RUN = "🏃"
+
+class SportButtonStyle(Enum):
+    ALL = discord.ButtonStyle.grey
+    SWIM = discord.ButtonStyle.blurple
+    BIKE = discord.ButtonStyle.green
+    RUN = discord.ButtonStyle.red
 
 class ActivityType(Enum):
     TRAINING = "training"

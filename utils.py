@@ -1,7 +1,20 @@
 from datetime import datetime, timedelta, date
 
-from models import Sport, ActivityType, EquipmentType
+from models import Sport, ActivityType, EquipmentType, SportEmoji, SportButtonStyle
 
+SPORT_EMOJI = {
+    Sport.ALL: SportEmoji.ALL.value,
+    Sport.SWIM: SportEmoji.SWIM.value,
+    Sport.BIKE: SportEmoji.BIKE.value,
+    Sport.RUN: SportEmoji.RUN.value,
+}
+
+SPORT_BUTTON_STYLE = {
+    Sport.ALL: SportButtonStyle.ALL.value,
+    Sport.SWIM: SportButtonStyle.SWIM.value,
+    Sport.BIKE: SportButtonStyle.BIKE.value,
+    Sport.RUN: SportButtonStyle.RUN.value,
+}
 
 def format_distance(distance, sport: Sport):
     distance_str = f"{int(distance)}m" if sport == Sport.SWIM else f"{distance}km"

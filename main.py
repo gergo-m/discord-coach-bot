@@ -34,7 +34,9 @@ async def load():
     await bot.load_extension('cogs.activities')
     await bot.load_extension('cogs.add_equipment')
     await bot.load_extension('cogs.delete_equipment')
-    await bot.load_extension('cogs.equipments')
+    await bot.load_extension('cogs.retire_equipment')
+    await bot.load_extension('cogs.unretire_equipment')
+    await bot.load_extension('cogs.equipment')
 
 if __name__ == '__main__':
     import asyncio

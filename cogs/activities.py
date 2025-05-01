@@ -5,8 +5,8 @@ from discord.ui import View, Button
 from discord import app_commands, Interaction
 
 from database import get_activities, delete_activity
-from models import Sport, Activity
-from utils import format_distance, start_time_to_string, date_to_string, get_type_with_sport, format_duration
+from models import Sport, Activity, SportEmoji
+from utils import format_distance, start_time_to_string, date_to_string, get_type_with_sport, format_duration, SPORT_EMOJI
 
 
 class GetActivitiesView(View):
@@ -30,66 +30,66 @@ class GetActivitiesView(View):
         )
         for activity in activities:
             value_lines = [
-                f"🗓️ {date_to_string(activity.date)} at {start_time_to_string(activity.start_time)}",
-                f"🏷️ **Type:** {get_type_with_sport(activity.activity_type, sport, True)}",
-                f"\n📏 **Distance:** {format_distance(activity.distance, activity.sport)}",
-                f"⏱️ **Duration:** {format_duration(activity.duration)}"
+                f"**Date:** {date_to_string(activity.date)} at {start_time_to_string(activity.start_time)}",
+                f"**Type:** {get_type_with_sport(activity.activity_type, activity.sport, True)}",
+                f"**Distance:** {format_distance(activity.distance, activity.sport)}",
+                f"**Duration:** {format_duration(activity.duration)}"
             ]
 
             if activity.elevation > 0:
-                value_lines.append(f"🗻 **Elevation:** {activity.elevation}m")
+                value_lines.append(f"**Elevation:** {activity.elevation}m")
 
             if activity.avg_heart_rate > 0:
-                value_lines.append(f"💗 **Avg HR:** {activity.avg_heart_rate} bpm")
+                value_lines.append(f"**Avg HR:** {activity.avg_heart_rate} bpm")
 
             if activity.max_heart_rate > 0:
-                value_lines.append(f"💓 **Max HR:** {activity.max_heart_rate} bpm")
+                value_lines.append(f"**Max HR:** {activity.max_heart_rate} bpm")
 
-            value_lines.append(f"💪 **RPE:** {activity.rpe}/10\n")
+            value_lines.append(f"**RPE:** {activity.rpe}/10\n")
 
             if activity.location:
-                value_lines.append(f"🗺️ **Location:** {activity.location}")
+                value_lines.append(f"**Location:** {activity.location}")
 
             if activity.weather:
-                value_lines.append(f"🌦️ **Weather:** {activity.weather}")
+                value_lines.append(f"**Weather:** {activity.weather}")
 
             if activity.feelings:
-                value_lines.append(f"🎭 **Feelings:** {activity.feelings}")
+                value_lines.append(f"**Feelings:** {activity.feelings}")
 
             if activity.description:
-                value_lines.append(f"\n📝 **Description:**\n{activity.description}")
+                value_lines.append(f"\n**Description:**\n{activity.description}")
 
             equipment_str = ", ".join([f"{eq.name} ({eq.type.value})" for eq in activity.equipment_used]) or "None"
             value_lines.append(f"\n🔧 **Equipment:** {equipment_str}")
 
             embed.add_field(
-                name=f"🏅 {activity.title} ({activity.sport.value.capitalize()})" if sport == Sport.ALL else f"🏅 {activity.title}",
+                name=f"{SPORT_EMOJI[activity.sport]} {activity.title}",
                 value="\n".join(value_lines),
                 inline=True
             )
 
         if not activities:
-            embed.description = "No activities found. Time to get moving! 🏊🚵🏃"
+            embed.description = f"No activities found. Time to get moving! {SportEmoji.SWIM.value}{SportEmoji.BIKE.value}{SportEmoji.RUN.value}"
         else:
             embed.set_footer(text="Great job so far. Keep it up! 💪")
         return embed
 
-    @discord.ui.button(label=Sport.ALL.value.capitalize(), style=discord.ButtonStyle.grey, emoji="📚")
+    @discord.ui.button(label=Sport.ALL.value.capitalize(), style=discord.ButtonStyle.grey, emoji=SportEmoji.ALL.value)
     async def all_button(self, interaction: discord.Interaction, button: Button):
         embed = self.build_embed(interaction.user.id, Sport.ALL, button.style)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label=Sport.SWIM.value.capitalize(), style=discord.ButtonStyle.blurple, emoji="🏊")
+    @discord.ui.button(label=Sport.SWIM.value.capitalize(), style=discord.ButtonStyle.blurple, emoji=SportEmoji.SWIM.value)
     async def swim_button(self, interaction: discord.Interaction, button: Button):
         embed = self.build_embed(interaction.user.id, Sport.SWIM, button.style)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label=Sport.BIKE.value.capitalize(), style=discord.ButtonStyle.green, emoji="🚵")
+    @discord.ui.button(label=Sport.BIKE.value.capitalize(), style=discord.ButtonStyle.green, emoji=SportEmoji.BIKE.value)
     async def bike_button(self, interaction: discord.Interaction, button: Button):
         embed = self.build_embed(interaction.user.id, Sport.BIKE, button.style)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @discord.ui.button(label=Sport.RUN.value.capitalize(), style=discord.ButtonStyle.red, emoji="🏃")
+    @discord.ui.button(label=Sport.RUN.value.capitalize(), style=discord.ButtonStyle.red, emoji=SportEmoji.RUN.value)
     async def run_button(self, interaction: discord.Interaction, button: Button):
         embed = self.build_embed(interaction.user.id, Sport.RUN, button.style)
         await interaction.response.send_message(embed=embed, ephemeral=True)

@@ -266,7 +266,7 @@ def delete_activity(activity_id: int):
                         SET distance_used = ?,
                             time_used = ?,
                             times_used = ?,
-                            updated_at = ?,
+                            updated_at = ?
                         WHERE id = ?''',
                       (new_distance,
                        format_timedelta(new_time),
@@ -423,7 +423,7 @@ def delete_equipment(equipment_id: int):
                         SET distance_used = ?,
                             time_used = ?,
                             times_used = ?,
-                            updated_at = ?,
+                            updated_at = ?
                         WHERE id = ?''',
                       (new_distance,
                        format_timedelta(new_time),

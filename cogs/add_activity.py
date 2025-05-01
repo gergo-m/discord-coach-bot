@@ -10,38 +10,23 @@ from typing import List
 from models import Activity, Sport, ActivityType, EquipmentType, Equipment
 from database import add_activity, get_activities, get_equipments
 from utils import format_distance, start_time_to_string, start_time_from_string, date_from_string, date_to_string, \
-    is_type_appropriate, get_type_with_sport
+    is_type_appropriate, get_type_with_sport, SPORT_BUTTON_STYLE, SPORT_EMOJI
+
 
 class AddActivityView(View):
     def __init__(self, ctx):
         super().__init__()
         self.ctx = ctx
 
-        sport_config = {
-            Sport.SWIM: {
-                "style": discord.ButtonStyle.blurple,
-                "emoji": "🏊"
-            },
-            Sport.BIKE: {
-                "style": discord.ButtonStyle.green,
-                "emoji": "🚵"
-            },
-            Sport.RUN: {
-                "style": discord.ButtonStyle.red,
-                "emoji": "🏃"
-            }
-        }
-
         for sport in Sport:
             if sport == Sport.ALL:
                 continue
 
-            config = sport_config.get(sport, {})
             self.add_item(
                 Button(
                     label=sport.value.capitalize(),
-                    style=config.get("style", discord.ButtonStyle.secondary),
-                    emoji=config.get("emoji", ""),
+                    style=SPORT_BUTTON_STYLE[sport],
+                    emoji=SPORT_EMOJI[sport],
                     custom_id=f"sport_{sport.value}",
                 )
             )
@@ -358,7 +343,8 @@ class EquipmentSelectView(View):
                 label=eq.name,
                 value=str(eq.id),
                 description=f"{eq.type.value} ({eq.distance_used}km used, {eq.times_used} times)"
-            ) for eq in user_equipment if not eq.retired
+            ) for eq in user_equipment
+                if not eq.retired and (eq.sport == activity.sport or eq.sport == Sport.ALL)
         ]
 
         if options:
@@ -490,7 +476,7 @@ class AddActivity(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="addactivity", description="Add an activity")
+    @app_commands.command(name="add_activity", description="Add an activity")
     async def add_activity(self, interaction: discord.Interaction):
         view = AddActivityView(interaction.context)
         await interaction.response.send_message("What sport?", view=view)
