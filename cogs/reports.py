@@ -26,7 +26,7 @@ class Reports(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="weekly", description="Show your weekly activity summary")
+    @app_commands.command(name="weekly_report", description="Show your weekly activity summary")
     @app_commands.describe(week="ISO week number (1-53), defaults to current week", sport="Filter by specific sport, defaults to all")
     @app_commands.choices(
         sport=[
@@ -76,7 +76,7 @@ class Reports(commands.Cog):
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="monthly", description="Show your monthly activity summary")
+    @app_commands.command(name="monthly_report", description="Show your monthly activity summary")
     @app_commands.describe(month="Month number (1-12), defaults to current month", sport="Filter by specific sport, defaults to all")
     @app_commands.choices(
         sport=[
