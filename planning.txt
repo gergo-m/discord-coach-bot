@@ -11,7 +11,8 @@ Main features:
 - weekly reports (`/weekly_report [week] [sport]`)
 - monthly reports (`/monthly_report [month] [sport]`)
 - leaderboard (`/leaderboard <timeframe> [sport] [sort_by]`)
-- Strava integration (`/strava connect`)
+- Strava integration (`/strava <connect|sync>`)
+  - connect account: `/strava connect`
   - auto-sync: DM user to congratulate on activity, ask to post it in the channel for others to see
   - manual sync: `/strava sync` -> send ephemeral messages with new activities, ask to post in the current channel for others to see
 - achievements (`/achievements`)
