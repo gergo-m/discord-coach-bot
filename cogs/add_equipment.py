@@ -32,7 +32,7 @@ class SelectSportView(View):
         sport_value = interaction.data["custom_id"].split("_")[1]
         sport = Sport(sport_value)
         view = EquipmentTypeSelectView(sport)
-        await interaction.response.send_message(view=view)
+        await interaction.response.send_message(view=view, ephemeral=True)
         return False
 
 class EquipmentTypeSelectView(View):
@@ -146,7 +146,7 @@ class EquipmentDetailsModal(Modal):
         )
 
         add_equipment(equipment)
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class AddEquipment(commands.Cog):
     def __init__(self, bot):
@@ -155,7 +155,7 @@ class AddEquipment(commands.Cog):
     @app_commands.command(name="add_equipment", description="Add an equipment")
     async def add_equipment(self, interaction: Interaction):
         view = SelectSportView(interaction.context)
-        await interaction.response.send_message("Which sport is this equipment used in?", view=view)
+        await interaction.response.send_message("Which sport is this equipment used in?", view=view, ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(AddEquipment(bot))

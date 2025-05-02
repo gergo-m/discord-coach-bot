@@ -84,7 +84,7 @@ class CoreInputModal(Modal):
             title=self.title_input.value,
         )
 
-        await interaction.response.send_message("Great! Press the button below to add activity data:", view=ContinueToDataView(activity))
+        await interaction.response.send_message("Great! Press the button below to add activity data:", view=ContinueToDataView(activity), ephemeral=True)
 
 class ContinueToDataView(View):
     def __init__(self, activity: Activity):
@@ -200,7 +200,8 @@ class DataInputModal(Modal):
             self.activity.max_heart_rate = max_heart_rate
 
         await interaction.response.send_message("Almost there! Press the button below to add some final details:",
-                                                view=ContinueToDetailsView(self.activity))
+                                                view=ContinueToDetailsView(self.activity),
+                                                ephemeral=True)
 
 class ContinueToDetailsView(View):
     def __init__(self, activity: Activity):
@@ -329,7 +330,8 @@ class RPEView(View):
         embed = activity_saved_embed(self.activity)
         await interaction.response.send_message(
             content="✅ Activity saved with equipment!",
-            embed=embed
+            embed=embed,
+            ephemeral = True
         )
 
 class EquipmentSelectView(View):
@@ -370,7 +372,8 @@ class EquipmentSelectView(View):
         embed = activity_saved_embed(self.activity)
         await interaction.response.send_message(
             content="✅ Activity saved with equipment!",
-            embed=embed
+            embed=embed,
+            ephemeral = True
         )
 
 def activity_saved_embed(activity: Activity):
@@ -478,7 +481,7 @@ class AddActivity(commands.Cog):
     @app_commands.command(name="add_activity", description="Add an activity")
     async def add_activity(self, interaction: discord.Interaction):
         view = AddActivityView(interaction.context)
-        await interaction.response.send_message("What sport?", view=view)
+        await interaction.response.send_message("What sport?", view=view, ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(AddActivity(bot))

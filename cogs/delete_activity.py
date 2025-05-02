@@ -55,7 +55,7 @@ class DeleteActivitySelect(discord.ui.Select):
         activity_id = int(self.values[0])
         await interaction.response.send_message(
             content="Are you sure you want to delete this activity?",
-            view=ConfirmDeleteView(activity_id)
+            view=ConfirmDeleteView(activity_id), ephemeral=True
         )
 
 class DeleteActivityView(discord.ui.View):

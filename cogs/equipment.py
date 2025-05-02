@@ -69,7 +69,7 @@ class GetEquipmentsView(View):
         button_style = interaction
         sport = Sport(sport_value)
         embed = self.build_embed(interaction.user.id, sport, discord.ButtonStyle.blurple)
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         return False
 
 class Equipments(commands.Cog):
