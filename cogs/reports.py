@@ -27,7 +27,12 @@ class Reports(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="weekly", description="Show your weekly activity summary")
-    @app_commands.describe(week="ISO week number (1-53), defaults to current week", sport="Sport (swim, bike, run, all)")
+    @app_commands.describe(week="ISO week number (1-53), defaults to current week", sport="Filter by specific sport, defaults to all")
+    @app_commands.choices(
+        sport=[
+            app_commands.Choice(name=sport.value, value=sport.value) for sport in Sport
+        ]
+    )
     async def weekly(self, interaction: Interaction, week: int = None, sport: str = "all"):
         today = datetime.now().date()
         year = today.year
@@ -72,7 +77,12 @@ class Reports(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="monthly", description="Show your monthly activity summary")
-    @app_commands.describe(month="Month number (1-12), defaults to current month", sport="Sport (swim, bike, run, all)")
+    @app_commands.describe(month="Month number (1-12), defaults to current month", sport="Filter by specific sport, defaults to all")
+    @app_commands.choices(
+        sport=[
+            app_commands.Choice(name=sport.value, value=sport.value) for sport in Sport
+        ]
+    )
     async def monthly(self, interaction: Interaction, month: int = None, sport: str = "all"):
         today = datetime.now().date()
         year = today.year
