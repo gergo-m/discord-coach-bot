@@ -1,0 +1,42 @@
+# Equipment (IDs 1-8)
+!quickadd equipment name="Speedo Goggles" model="Fastskin 5" sport=swim type=goggles
+!quickadd equipment name="Arena Swimsuit" model="Carbon Pro" sport=swim type=swimsuit
+!quickadd equipment name="TYR Wetsuit" model="Freak of Nature" sport=swim type=wetsuit
+!quickadd equipment name="Trek Domane" model="SL7" sport=bike type="road bike"
+!quickadd equipment name="Kask Helmet" model="Protone" sport=bike type=helmet
+!quickadd equipment name="Shimano Shoes" model="RC902" sport=bike type="bike shoes"
+!quickadd equipment name="Nike Vaporfly" model="3" sport=run type="running shoes"
+!quickadd equipment name="Garmin Watch" model="Forerunner 955" sport=run type="running watch"
+#
+# Swim Activities (IDs 1-3)
+!quickadd activity sport=swim date=2025-05-01 start=07:30 title="Morning Swim" type="interval activity" distance=1500 elevation=0 duration=00:45:00 rpe=6 equipment=1,2
+!quickadd activity sport=swim date=2025-05-03 start=18:00 title="Open Water Session" type="open water activity" distance=2000 elevation=0 duration=01:00:00 rpe=7 equipment=3
+!quickadd activity sport=swim date=2025-05-05 start=06:45 title="Technique Drills" type=workout distance=1200 elevation=0 duration=00:35:00 rpe=5 equipment=1
+#
+# Bike Activities (IDs 4-6)
+!quickadd activity sport=bike date=2025-05-02 start=08:00 title="Long Ride" type="long activity" distance=85.0 elevation=1200 duration=04:15:00 rpe=7 equipment=4,5,6
+!quickadd activity sport=bike date=2025-05-04 start=17:45 title="Hill Repeats" type="interval activity" distance=45.0 elevation=800 duration=01:50:00 rpe=8 equipment=4
+!quickadd activity sport=bike date=2025-05-06 start=07:15 title="Commute Ride" type="activity commute" distance=15.0 elevation=150 duration=00:45:00 rpe=5 equipment=4
+#
+# Run Activities (IDs 7-9)
+!quickadd activity sport=run date=2025-05-05 start=06:30 title="Tempo Run" type="tempo activity" distance=10.2 elevation=50 duration=00:50:00 rpe=7 equipment=7,8
+!quickadd activity sport=run date=2025-05-07 start=09:00 title="Recovery Jog" type="training" distance=5.5 elevation=20 duration=00:35:00 rpe=4 equipment=7
+!quickadd activity sport=run date=2025-05-09 start=17:30 title="5K Race" type="activity race" distance=5.0 elevation=30 duration=00:22:30 rpe=9 equipment=7,8
+#
+# Mixed Activities (IDs 10-12)
+!quickadd activity sport=swim date=2025-05-08 start=06:45 title="Race Prep" type=workout distance=3800 elevation=0 duration=01:15:00 rpe=8 equipment=3
+!quickadd activity sport=bike date=2025-05-10 start=07:00 title="Aerobic Base" type="long activity" distance=95.0 elevation=950 duration=04:30:00 rpe=6 equipment=4,5
+!quickadd activity sport=run date=2025-05-11 start=06:15 title="Fartlek Session" type="interval activity" distance=12.8 elevation=120 duration=01:05:00 rpe=8 equipment=7
+#
+# Equipment-Intensive Activities (IDs 13-15)
+!quickadd activity sport=swim date=2025-05-12 start=07:00 title="Full Gear Swim" type=workout distance=3000 elevation=0 duration=01:10:00 rpe=7 equipment=1,2,3
+!quickadd activity sport=bike date=2025-05-13 start=09:30 title="Gran Fondo" type="long activity" distance=120.0 elevation=1500 duration=05:00:00 rpe=8 equipment=4,5,6
+!quickadd activity sport=run date=2025-05-14 start=17:45 title="Track Workout" type="interval activity" distance=8.0 elevation=10 duration=00:40:00 rpe=8 equipment=7,8
+#
+# Minimal Equipment Activities (IDs 16-20)
+!quickadd activity sport=swim date=2025-05-15 start=19:00 title="Recovery Swim" type=training distance=800 elevation=0 duration=00:25:00 rpe=3 equipment=1
+!quickadd activity sport=bike date=2025-05-16 start=16:00 title="Easy Spin" type=workout distance=30.0 elevation=200 duration=01:15:00 rpe=4 equipment=4
+!quickadd activity sport=run date=2025-05-17 start=06:00 title="Morning Jog" type=training distance=8.5 elevation=40 duration=00:45:00 rpe=5
+#
+# Other user's activities (IDs 21)
+!quickadd activity user_id=1149090727947669505 sport=bike date=2025-05-03 start=18:42 title="Intervals" type="interval activity" distance=34.54 elevation=254 duration=01:10:23 rpe=7
