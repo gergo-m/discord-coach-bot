@@ -8,10 +8,15 @@ Main features:
 - view equipment (`/equipment`)
 - retire equipment (`/retire_equipment`)
 - delete equipment (`/delete_equipment`)
-- weekly summaries (automatically & `/weekly [sport]`)
-- monthly summaries (automatically on first day 9am & `/monthly <month> [sport]`)
-- leaderboard (`/leaderboard`)
-- challenges
+- weekly reports (`/weekly_report [week] [sport]`)
+- monthly reports (`/monthly_report [month] [sport]`)
+- leaderboard (`/leaderboard <timeframe> [sport] [sort_by]`)
+- Strava integration (`/strava connect`)
+  - auto-sync: DM user to congratulate on activity, ask to post it in the channel for others to see
+  - manual sync: `/strava sync` -> send ephemeral messages with new activities, ask to post in the current channel for others to see
+- achievements (`/achievements`)
+  - given automatically
+- challenges (`/challenges [current|past]`)
 - training plans
+- AI workout generator
 - cycling and triathlon race notifications and results (`/race ...`)
-- Strava integration
