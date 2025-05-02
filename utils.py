@@ -16,6 +16,12 @@ SPORT_BUTTON_STYLE = {
     Sport.RUN: SportButtonStyle.RUN.value,
 }
 
+SPORT_PACE_NAME = {
+    Sport.SWIM: "pace",
+    Sport.BIKE: "speed",
+    Sport.RUN: "pace"
+}
+
 def format_distance(distance, sport: Sport):
     distance_str = f"{int(distance)}m" if sport == Sport.SWIM else f"{distance}km"
     return distance_str
@@ -95,3 +101,16 @@ def is_equipment_appropriate(type: EquipmentType, sport: Sport):
 def get_type_with_sport(type: ActivityType, sport: Sport, capitalize: bool):
     result = type.value.replace("activity", sport.value)
     return result.title() if capitalize else result
+
+def format_pace_speed(activity, put_prefix: bool = True) -> str:
+    output = f"**Avg {SPORT_PACE_NAME[activity.sport].capitalize()}:** " if put_prefix else ""
+    if activity.sport == Sport.SWIM:
+        mins = int(activity.pace)
+        secs = int((activity.pace - mins) * 60)
+        return f"{output}{mins}:{secs:02} /100m"
+    elif activity.sport == Sport.BIKE:
+        return f"{output}{activity.pace:.1f} km/h"
+    elif activity.sport == Sport.RUN:
+        mins = int(activity.pace)
+        secs = int((activity.pace - mins) * 60)
+        return f"{output}{mins}:{secs:02} /km"

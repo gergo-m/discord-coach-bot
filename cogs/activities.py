@@ -6,7 +6,8 @@ from discord import app_commands, Interaction
 
 from database import get_activities, delete_activity
 from models import Sport, Activity, SportEmoji
-from utils import format_distance, start_time_to_string, date_to_string, get_type_with_sport, format_duration, SPORT_EMOJI
+from utils import format_distance, start_time_to_string, date_to_string, get_type_with_sport, format_duration, \
+    SPORT_EMOJI, format_pace_speed
 
 
 class GetActivitiesView(View):
@@ -33,7 +34,8 @@ class GetActivitiesView(View):
                 f"**Date:** {date_to_string(activity.date)} at {start_time_to_string(activity.start_time)}",
                 f"**Type:** {get_type_with_sport(activity.activity_type, activity.sport, True)}",
                 f"**Distance:** {format_distance(activity.distance, activity.sport)}",
-                f"**Duration:** {format_duration(activity.duration)}"
+                f"**Duration:** {format_duration(activity.duration)}",
+                f"{format_pace_speed(activity)}"
             ]
 
             if activity.elevation_gain > 0:

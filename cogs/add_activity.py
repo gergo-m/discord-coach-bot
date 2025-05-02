@@ -10,7 +10,7 @@ from typing import List
 from models import Activity, Sport, ActivityType, EquipmentType, Equipment
 from database import add_activity, get_activities, get_equipments
 from utils import format_distance, start_time_to_string, start_time_from_string, date_from_string, date_to_string, \
-    is_type_appropriate, get_type_with_sport, SPORT_BUTTON_STYLE, SPORT_EMOJI
+    is_type_appropriate, get_type_with_sport, SPORT_BUTTON_STYLE, SPORT_EMOJI, SPORT_PACE_NAME, format_pace_speed
 
 
 class AddActivityView(View):
@@ -329,7 +329,6 @@ class RPEView(View):
     async def send_confirmation(self, interaction):
         embed = activity_saved_embed(self.activity)
         await interaction.response.send_message(
-            content="✅ Activity saved with equipment!",
             embed=embed,
             ephemeral = True
         )
@@ -371,7 +370,6 @@ class EquipmentSelectView(View):
     async def send_confirmation(self, interaction):
         embed = activity_saved_embed(self.activity)
         await interaction.response.send_message(
-            content="✅ Activity saved with equipment!",
             embed=embed,
             ephemeral = True
         )
@@ -409,15 +407,21 @@ def activity_saved_embed(activity: Activity):
         inline=True
     )
     embed.add_field(
+        name="Distance",
+        value=distance_str,
+        inline=True
+    )
+    embed.add_field(
         name="Duration",
         value=f"{activity.duration}",
         inline=True
     )
     embed.add_field(
-        name="Distance",
-        value=distance_str,
+        name=f"Avg {SPORT_PACE_NAME[activity.sport].capitalize()}",
+        value=f"{format_pace_speed(activity, False)}",
         inline=True
     )
+
     if activity.sport != Sport.SWIM:
         embed.add_field(
             name="Elevation Gain",
