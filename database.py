@@ -129,22 +129,27 @@ def add_activity(activity: Activity):
     finally:
         conn.close()
 
-def get_activities(user_id, sport=None):
+def get_activities(user_id=None, sport=None, start_date=None, end_date=None):
     conn = sqlite3.connect("discord_bot.db")
     try:
         c = conn.cursor()
+        query = "SELECT * FROM activities WHERE 1=1"
+        params = []
+
+        if user_id is not None:
+            query += " AND user_id = ?"
+            params.append(user_id)
         if sport is not None:
-            # sport is provided, filter by user_id and sport
-            c.execute(
-                "SELECT * FROM activities WHERE user_id = ? AND sport = ?",
-                (user_id, sport.value)
-            )
-        else:
-            # sport is not provided, filter only by user_id
-            c.execute(
-                "SELECT * FROM activities WHERE user_id = ?",
-                (user_id,)
-            )
+            query += " AND sport = ?"
+            params.append(sport.value)
+        if start_date is not None:
+            query += " AND date >= ?"
+            params.append(date_to_string(start_date))
+        if end_date is not None:
+            query += " AND date <= ?"
+            params.append(date_to_string(end_date))
+
+        c.execute(query, params)
         rows = c.fetchall()
         # converting tuples to Activity objects
         activities = []

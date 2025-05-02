@@ -45,7 +45,7 @@ def format_timedelta(td: timedelta) -> str:
     minutes, seconds = divmod(remainder, 60)
     return f"{hours:02}:{minutes:02}:{seconds:02}"
 
-def format_duration(duration: timedelta) -> str:
+def format_duration(duration: timedelta, put_seconds: bool = True) -> str:
     total_seconds = duration.total_seconds()
     hours = int(total_seconds // 3600)
     minutes = int((total_seconds % 3600) // 60)
@@ -55,7 +55,7 @@ def format_duration(duration: timedelta) -> str:
         parts.append(f"{hours}h")
     if minutes > 0:
         parts.append(f"{minutes}m")
-    if seconds > 0:
+    if put_seconds and seconds > 0:
         parts.append(f"{seconds}s")
     return " ".join(parts) if parts else "0m"
 
