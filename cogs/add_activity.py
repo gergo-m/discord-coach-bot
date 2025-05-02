@@ -106,8 +106,8 @@ class DataInputModal(Modal):
             placeholder="Marathon? 42.2 | Sprint? 0.1 | Pool laps? 1500"
         )
         if self.activity.sport != Sport.SWIM:
-            self.elevation_input = TextInput(
-                label="🗻 Elevation (meters)",
+            self.elevation_gain_input = TextInput(
+                label="🗻 Elevation Gain (meters)",
                 placeholder="No mountains in sight? 2 | Hilly ride? 625"
             )
         self.duration_input = TextInput(
@@ -127,7 +127,7 @@ class DataInputModal(Modal):
 
         self.add_item(self.distance_input)
         if self.activity.sport != Sport.SWIM:
-            self.add_item(self.elevation_input)
+            self.add_item(self.elevation_gain_input)
         self.add_item(self.duration_input)
         self.add_item(self.avg_heart_rate_input)
         self.add_item(self.max_heart_rate_input)
@@ -151,15 +151,15 @@ class DataInputModal(Modal):
                 ephemeral=True
             )
 
-        # validate elevation
+        # validate elevation_gain
         if self.activity.sport != Sport.SWIM:
             try:
-                elevation = int(self.elevation_input.value)
-                if elevation < 0:
+                elevation_gain = int(self.elevation_gain_input.value)
+                if elevation_gain < 0:
                     raise ValueError
             except ValueError:
                 return await interaction.response.send_message(
-                    "🗻 Elevation needs to be a non-negative number!",
+                    "🗻 Elevation Gain needs to be a non-negative number!",
                     ephemeral=True
                 )
 
@@ -192,7 +192,7 @@ class DataInputModal(Modal):
 
         self.activity.distance = distance
         if self.activity.sport != Sport.SWIM:
-            self.activity.elevation = elevation
+            self.activity.elevation_gain = elevation_gain
         self.activity.duration = duration
         if self.avg_heart_rate_input.value:
             self.activity.avg_heart_rate = avg_heart_rate
@@ -420,8 +420,8 @@ def activity_saved_embed(activity: Activity):
     )
     if activity.sport != Sport.SWIM:
         embed.add_field(
-            name="Elevation",
-            value=f"{activity.elevation}m",
+            name="Elevation Gain",
+            value=f"{activity.elevation_gain}m",
             inline=True
         )
     embed.add_field(

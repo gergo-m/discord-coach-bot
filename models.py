@@ -85,7 +85,7 @@ class Activity:
     title: str = ""
     activity_type: ActivityType = field(default=ActivityType.TRAINING)
     distance: float = field(default=0.0)
-    elevation: int = field(default=0)
+    elevation_gain: int = field(default=0)
     duration: timedelta = field(default=timedelta(hours=0, minutes=0, seconds=0))
 
     # Performance metrics

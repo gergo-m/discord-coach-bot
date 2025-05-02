@@ -19,7 +19,7 @@ def init_db():
                     title TEXT,
                     activity_type TEXT,
                     distance REAL,
-                    elevation INTEGER,
+                    elevation_gain INTEGER,
                     duration TEXT,
                     avg_heart_rate INTEGER,
                     max_heart_rate INTEGER,
@@ -74,7 +74,7 @@ def add_activity(activity: Activity):
 
         c.execute('''INSERT INTO activities (
                             user_id, sport, date, start_time,
-                            title, activity_type, distance, elevation, duration,
+                            title, activity_type, distance, elevation_gain, duration,
                             avg_heart_rate, max_heart_rate, rpe,
                             description, location, weather, feelings,
                             created_at, updated_at
@@ -92,7 +92,7 @@ def add_activity(activity: Activity):
                     activity.title,
                     activity.activity_type.value,
                     activity.distance,
-                    activity.elevation,
+                    activity.elevation_gain,
                     duration_str,
                     activity.avg_heart_rate,
                     activity.max_heart_rate,
@@ -155,7 +155,7 @@ def get_activities(user_id=None, sport=None, start_date=None, end_date=None):
         activities = []
         # row indices:
         # 0:id, 1:user_id, 2:sport, 3:date, 4:start_time,
-        # 5:title, 6:activity_type, 7:distance, 8:elevation, 9:duration,
+        # 5:title, 6:activity_type, 7:distance, 8:elevation_gain, 9:duration,
         # 10:avg_hr, 11:max_hr, 12:rpe,
         # 13:description, 14:location, 15:weather, 16:feelings,
         # 17:created_at, 18:updated_at
@@ -176,7 +176,7 @@ def get_activities(user_id=None, sport=None, start_date=None, end_date=None):
                 title=row[5],
                 activity_type=ActivityType(row[6]),
                 distance=row[7],
-                elevation=row[8],
+                elevation_gain=row[8],
                 duration=duration_val,
                 avg_heart_rate=row[10],
                 max_heart_rate=row[11],

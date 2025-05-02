@@ -36,8 +36,8 @@ class GetActivitiesView(View):
                 f"**Duration:** {format_duration(activity.duration)}"
             ]
 
-            if activity.elevation > 0:
-                value_lines.append(f"**Elevation:** {activity.elevation}m")
+            if activity.elevation_gain > 0:
+                value_lines.append(f"**Elevation Gain:** {activity.elevation_gain}m")
 
             if activity.avg_heart_rate > 0:
                 value_lines.append(f"**Avg HR:** {activity.avg_heart_rate} bpm")

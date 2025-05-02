@@ -12,7 +12,7 @@ class QuickAdd(commands.Cog):
     @commands.command()
     async def quickadd(self, ctx, *, line):
         """Add activities/equipment with one command:
-        !quickadd activity sport=run date=2025-05-01 start=07:30 title="Morning Run" type=workout distance=10.0 elevation=50 duration=00:45:00 rpe=7
+        !quickadd activity sport=run date=2025-05-01 start=07:30 title="Morning Run" type=workout distance=10.0 elevation_gain=50 duration=00:45:00 rpe=7
         !quickadd equipment name="Speedo" model="Fastskin" sport=swim type=goggles
         """
         try:
@@ -50,7 +50,7 @@ class QuickAdd(commands.Cog):
                     title=params["title"],
                     activity_type=ActivityType(params["type"]),
                     distance=float(params["distance"]),
-                    elevation=int(params.get("elevation", 0)),
+                    elevation_gain=int(params.get("elevation_gain", 0)),
                     duration=parsed_duration(params["duration"]),
                     rpe=int(params["rpe"]),
                     created_at=datetime.now(),
@@ -81,7 +81,7 @@ class QuickAdd(commands.Cog):
 
         except Exception as e:
             await ctx.send(f"Error: {str(e)}\nExample usage:\n"
-                           "!quickadd activity sport=run date=2025-05-01 start=07:30 title=\"Morning Run\" type=workout distance=10.0 elevation=50 duration=00:45:00 rpe=7\n"
+                           "!quickadd activity sport=run date=2025-05-01 start=07:30 title=\"Morning Run\" type=workout distance=10.0 elevation_gain=50 duration=00:45:00 rpe=7\n"
                            "!quickadd equipment name=\"Speedo\" model=\"Fastskin\" sport=swim type=goggles")
 
 def parsed_duration(duration_str: str) -> timedelta:

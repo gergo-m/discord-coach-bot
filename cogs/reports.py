@@ -49,7 +49,7 @@ class Reports(commands.Cog):
             return
 
         total_distance = sum(a.distance for a in activities)
-        total_elevation = sum(a.elevation for a in activities)
+        total_elevation_gain = sum(a.elevation_gain for a in activities)
         total_duration = sum((a.duration for a in activities), timedelta())
 
         embed = discord.Embed(
@@ -63,7 +63,7 @@ class Reports(commands.Cog):
         )
         if sport_enum != Sport.SWIM:
             embed.add_field(
-                name="Total Elevation", value=f"{total_elevation} m",
+                name="Total Elevation Gain", value=f"{total_elevation_gain} m",
                 inline=True
             )
         embed.add_field(
@@ -99,7 +99,7 @@ class Reports(commands.Cog):
             return
 
         total_distance = sum(a.distance for a in activities)
-        total_elevation = sum(a.elevation for a in activities)
+        total_elevation_gain = sum(a.elevation_gain for a in activities)
         total_duration = sum((a.duration for a in activities), timedelta())
 
         embed = discord.Embed(
@@ -108,7 +108,7 @@ class Reports(commands.Cog):
             color=discord.Color.green()
         )
         embed.add_field(name="Total Distance", value=f"{total_distance:.2f} km", inline=True)
-        embed.add_field(name="Total Elevation", value=f"{total_elevation} m", inline=True)
+        embed.add_field(name="Total Elevation Gain", value=f"{total_elevation_gain} m", inline=True)
         embed.add_field(name="Total Duration", value=f"{format_duration(total_duration)}", inline=True)
 
         activity_list = "\n".join(f"- {SPORT_EMOJI[a.sport]} {a.title} ({a.date})" for a in activities[:10])
