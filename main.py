@@ -38,6 +38,7 @@ async def load():
     await bot.load_extension('cogs.unretire_equipment')
     await bot.load_extension('cogs.equipment')
     await bot.load_extension('cogs.quickadd')
+    await bot.load_extension('cogs.reports')
 
 if __name__ == '__main__':
     import asyncio
