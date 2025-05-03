@@ -130,3 +130,13 @@ class Activity:
             hours = total_seconds / 3600
             return self.distance / hours # km/h
         return 0.0
+
+@dataclass
+class StravaToken:
+    user_id: int
+    strava_user_id: int
+    access_token: str
+    refresh_token: str
+    expires_at: datetime
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)

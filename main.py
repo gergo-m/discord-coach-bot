@@ -40,6 +40,7 @@ async def load():
     await bot.load_extension('cogs.quickadd')
     await bot.load_extension('cogs.reports')
     await bot.load_extension('cogs.leaderboards')
+    await bot.load_extension('cogs.strava')
 
 if __name__ == '__main__':
     import asyncio

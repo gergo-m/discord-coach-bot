@@ -1,7 +1,7 @@
 import sqlite3
 from typing import List
 
-from models import Activity, Sport, ActivityType, Equipment, EquipmentType
+from models import Activity, Sport, ActivityType, Equipment, EquipmentType, StravaToken
 from datetime import time, timedelta, datetime
 from utils import start_time_to_string, date_to_string, date_from_string, start_time_from_string, format_timedelta, \
     parse_timedelta, safe_parse_timedelta
@@ -53,6 +53,15 @@ def init_db():
                     PRIMARY KEY (activity_id, equipment_id),
                     FOREIGN KEY(activity_id) REFERENCES activities(id),
                     FOREIGN KEY(equipment_id) REFERENCES equipment(id)
+                )''')
+    c.execute('''CREATE TABLE IF NOT EXISTS strava_tokens (
+                    user_id INTEGER PRIMARY KEY,
+                    strava_user_id INTEGER,
+                    access_token TEXT,
+                    refresh_token TEXT,
+                    expires_at TEXT,
+                    created_at TEXT,
+                    updated_at TEXT
                 )''')
     conn.commit()
     conn.close()
@@ -243,7 +252,7 @@ def delete_activity(activity_id: int):
         activity_sport = Sport(sport_str)
 
         # get linked equipment
-        c.execute('''SELECT equipment.id
+        c.execute('''SELECT equipment_id
                     FROM activity_equipment
                     WHERE activity_id = ?''',
                   (activity_id,))
@@ -493,5 +502,49 @@ def retire_equipment(equipment_id: int):
                         WHERE id = ?''',
                   (True, current_date, current_datetime, equipment_id))
         conn.commit()
+    finally:
+        conn.close()
+
+def add_strava_token(token: StravaToken):
+    conn = sqlite3.connect("discord_bot.db")
+    try:
+        c = conn.cursor()
+        c.execute('''INSERT OR REPLACE INTO strava_tokens (
+                        user_id, strava_user_id, access_token, refresh_token,
+                        expires_at, created_at, updated_at
+                    )
+                    VALUES (?, ?, ?, ?,
+                            ?, ?, ?)''',
+                  (
+                      token.user_id,
+                      token.strava_user_id,
+                      token.access_token,
+                      token.refresh_token,
+                      date_to_string(token.expires_at),
+                      date_to_string(token.created_at),
+                      date_to_string(token.updated_at)
+                  ))
+        conn.commit()
+    finally:
+        conn.close()
+
+def get_strava_token(user_id: int) -> StravaToken | None:
+    conn = sqlite3.connect("discord_bot.db")
+    try:
+        c = conn.cursor()
+        c.execute('''SELECT * FROM strava_tokens WHERE user_id = ?''',
+                  (user_id,))
+        row = c.fetchone()
+        if row:
+            return StravaToken(
+                user_id=row[0],
+                strava_user_id=row[1],
+                access_token=row[2],
+                refresh_token=row[3],
+                expires_at=datetime.fromisoformat(row[4]),
+                created_at=datetime.fromisoformat(row[5]),
+                updated_at=datetime.fromisoformat(row[6])
+            )
+        return None
     finally:
         conn.close()

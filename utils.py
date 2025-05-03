@@ -22,6 +22,12 @@ SPORT_PACE_NAME = {
     Sport.RUN: "pace"
 }
 
+STRAVA_TO_SPORT = {
+    "swim": Sport.SWIM,
+    "ride": Sport.BIKE,
+    "run": Sport.RUN
+}
+
 def format_distance(distance, sport: Sport):
     distance_str = f"{int(distance)}m" if sport == Sport.SWIM else f"{distance}km"
     return distance_str
