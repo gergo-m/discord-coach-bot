@@ -4,6 +4,19 @@ import os
 from discord.ext import commands
 from dotenv import load_dotenv
 from database import init_db
+import threading
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running!"
+
+def run_flask():
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
+threading.Thread(target=run_flask).start()
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
