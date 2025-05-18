@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 import discord
 from discord import app_commands, Interaction
@@ -7,8 +7,8 @@ from discord.ext import commands
 from discord.ui import View, Button, Modal, TextInput
 from typing import List
 
-from models import Activity, Sport, ActivityType, EquipmentType, Equipment
-from database import add_activity, get_activities, get_equipments
+from models import Activity, Sport, ActivityType, Equipment
+from database import add_activity, get_equipments
 from utils import format_distance, start_time_to_string, start_time_from_string, date_from_string, date_to_string, \
     is_type_appropriate, get_type_with_sport, SPORT_BUTTON_STYLE, SPORT_EMOJI, SPORT_PACE_NAME, format_pace_speed
 
@@ -86,6 +86,7 @@ class CoreInputModal(Modal):
 
         await interaction.response.send_message("Great! Press the button below to add activity data:", view=ContinueToDataView(activity), ephemeral=True)
 
+
 class ContinueToDataView(View):
     def __init__(self, activity: Activity):
         super().__init__()
@@ -95,6 +96,7 @@ class ContinueToDataView(View):
     async def continue_to_data(self, interaction: discord.Interaction, button: Button):
         modal = DataInputModal(self.activity)
         await interaction.response.send_modal(modal)
+
 
 class DataInputModal(Modal):
     def __init__(self, activity: Activity):
@@ -203,6 +205,7 @@ class DataInputModal(Modal):
                                                 view=ContinueToDetailsView(self.activity),
                                                 ephemeral=True)
 
+
 class ContinueToDetailsView(View):
     def __init__(self, activity: Activity):
         super().__init__()
@@ -212,6 +215,7 @@ class ContinueToDetailsView(View):
     async def continue_to_details(self, interaction: discord.Interaction, button: Button):
         modal = DetailsInputModal(self.activity)
         await interaction.response.send_modal(modal)
+
 
 class DetailsInputModal(Modal):
     def __init__(self, activity: Activity):
@@ -291,6 +295,7 @@ class ActivityTypeSelectView(discord.ui.View):
         )
         self.stop()
 
+
 class RPEView(View):
     def __init__(self, activity: Activity):
         super().__init__(timeout=30)
@@ -298,9 +303,12 @@ class RPEView(View):
 
         for i in range(1, 11):
             style = discord.ButtonStyle.grey
-            if i >= 9: style = discord.ButtonStyle.red
-            elif i >= 7: style = discord.ButtonStyle.green
-            elif i >= 4: style = discord.ButtonStyle.blurple
+            if i >= 9:
+                style = discord.ButtonStyle.red
+            elif i >= 7:
+                style = discord.ButtonStyle.green
+            elif i >= 4:
+                style = discord.ButtonStyle.blurple
 
             self.add_item(
                 Button(
@@ -330,8 +338,9 @@ class RPEView(View):
         embed = activity_saved_embed(self.activity)
         await interaction.response.send_message(
             embed=embed,
-            ephemeral = True
+            ephemeral=True
         )
+
 
 class EquipmentSelectView(View):
     def __init__(self, activity: Activity, user_equipment: List[Equipment]):
@@ -344,7 +353,7 @@ class EquipmentSelectView(View):
                 value=str(eq.id),
                 description=f"{eq.type.value} ({eq.distance_used}km used, {eq.times_used} times)"
             ) for eq in user_equipment
-                if not eq.retired and (eq.sport == activity.sport or eq.sport == Sport.ALL)
+            if not eq.retired and (eq.sport == activity.sport or eq.sport == Sport.ALL)
         ]
 
         if options:
@@ -371,14 +380,14 @@ class EquipmentSelectView(View):
         embed = activity_saved_embed(self.activity)
         await interaction.response.send_message(
             embed=embed,
-            ephemeral = True
+            ephemeral=True
         )
+
 
 def activity_saved_embed(activity: Activity):
     distance_str = format_distance(activity.distance, activity.sport)
     equipment_str = ""
     if hasattr(activity, "equipment_used") and activity.equipment_used:
-        equipment_list = getattr(activity, "equipment_used", [])
         equipment_str = ", ".join([f"{eq.name} ({eq.type.value})" for eq in activity.equipment_used]) or "None"
 
     embed = discord.Embed(
@@ -478,6 +487,7 @@ def activity_saved_embed(activity: Activity):
     embed.set_footer(text="Your future self will thank you! 💪")
     return embed
 
+
 class AddActivity(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -486,6 +496,7 @@ class AddActivity(commands.Cog):
     async def add_activity(self, interaction: discord.Interaction):
         view = AddActivityView(interaction.context)
         await interaction.response.send_message("What sport?", view=view, ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(AddActivity(bot))

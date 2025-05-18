@@ -1,16 +1,10 @@
-from typing import Any
-
 import discord
 from discord import app_commands, Interaction
-from discord._types import ClientT
 from discord.ext import commands
-from datetime import datetime
-
-from discord.ui import Button
 
 from database import get_activities, delete_activity
-from models import Sport
 from utils import start_time_to_string, format_distance
+
 
 class ConfirmDeleteView(discord.ui.View):
     def __init__(self, activity_id):
@@ -30,6 +24,7 @@ class ConfirmDeleteView(discord.ui.View):
     async def cancel(self, interaction, button):
         await interaction.response.edit_message(content="❌ Deletion cancelled.", view=None)
         self.stop()
+
 
 class DeleteActivitySelect(discord.ui.Select):
     def __init__(self, activities):
@@ -58,6 +53,7 @@ class DeleteActivitySelect(discord.ui.Select):
             view=ConfirmDeleteView(activity_id), ephemeral=True
         )
 
+
 class DeleteActivityView(discord.ui.View):
     def __init__(self, activities):
         super().__init__(timeout=30)
@@ -85,6 +81,7 @@ class DeleteActivity(commands.Cog):
             view=view,
             ephemeral=True
         )
+
 
 async def setup(bot):
     await bot.add_cog(DeleteActivity(bot))

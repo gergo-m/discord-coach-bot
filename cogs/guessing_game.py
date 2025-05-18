@@ -13,6 +13,7 @@ pre_game_messages = [
     "The guessing game is about to begin!"
 ]
 
+
 class StartGameView(View):
     def __init__(self, ctx):
         super().__init__()
@@ -30,6 +31,7 @@ class StartGameView(View):
     @discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
     async def cancel_button(selfself, interaction: discord.Interaction, button: Button):
         await interaction.response.send_message("Game setup canceled.", ephemeral=True)
+
 
 class RangeInputModal(Modal):
     def __init__(self, ctx):
@@ -54,6 +56,7 @@ class RangeInputModal(Modal):
             "attempts": 0
         }
         await interaction.response.send_message(f"Game started! I'm thinking of a number between 1 and {max_range}. Start guessing with `/guess <your number>`.", ephemeral=True)
+
 
 class GuessingGame(commands.Cog):
     def __init__(self, bot):
@@ -89,6 +92,7 @@ class GuessingGame(commands.Cog):
                 del active_games[ctx.author.id]
         else:
             await ctx.send(f"{ctx.author.mention}, you haven't started a game yet! Type `/startGuess` to begin.")
+
 
 async def setup(bot):
     await bot.add_cog(GuessingGame(bot))

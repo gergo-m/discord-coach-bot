@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-from typing import Optional
 
 import discord
 from discord import app_commands
@@ -116,6 +115,7 @@ class Leaderboard(commands.Cog):
                 f"Error generating leaderboard: {str(e)}",
                 ephemeral=True
             )
+
 
 async def setup(bot):
     await bot.add_cog(Leaderboard(bot))

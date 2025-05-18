@@ -35,6 +35,7 @@ class SelectSportView(View):
         await interaction.response.send_message(view=view, ephemeral=True)
         return False
 
+
 class EquipmentTypeSelectView(View):
     def __init__(self, sport: Sport):
         super().__init__()
@@ -50,7 +51,7 @@ class EquipmentTypeSelectView(View):
 
         self.add_item(discord.ui.Select(
             placeholder="Choose equipment type...",
-            options = options,
+            options=options,
             custom_id="equipment_type"
         ))
 
@@ -58,6 +59,7 @@ class EquipmentTypeSelectView(View):
         selected_type = EquipmentType(self.children[0].values[0])
         modal = EquipmentDetailsModal(interaction.context, selected_type, self.sport)
         await interaction.response.send_modal(modal)
+
 
 class EquipmentDetailsModal(Modal):
     def __init__(self, ctx, equipment_type: EquipmentType, sport: Sport):
@@ -148,6 +150,7 @@ class EquipmentDetailsModal(Modal):
         add_equipment(equipment)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+
 class AddEquipment(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -156,6 +159,7 @@ class AddEquipment(commands.Cog):
     async def add_equipment(self, interaction: Interaction):
         view = SelectSportView(interaction.context)
         await interaction.response.send_message("Which sport is this equipment used in?", view=view, ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(AddEquipment(bot))

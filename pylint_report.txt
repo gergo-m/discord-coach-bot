@@ -1,0 +1,210 @@
+************* Module database
+database.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+database.py:70:0: R0914: Too many local variables (19/15) (too-many-locals)
+database.py:143:0: R0914: Too many local variables (28/15) (too-many-locals)
+database.py:240:0: R0914: Too many local variables (20/15) (too-many-locals)
+database.py:427:0: R0914: Too many local variables (20/15) (too-many-locals)
+database.py:5:0: C0411: standard import "datetime.timedelta" should be placed before first party import "models.Activity"  (wrong-import-order)
+************* Module main
+main.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+main.py:41:4: C0103: Variable name "GUILD_ID" doesn't conform to snake_case naming style (invalid-name)
+main.py:3:0: C0411: standard import "os" should be placed before third party import "discord" (wrong-import-order)
+main.py:7:0: C0411: standard import "threading" should be placed before third party imports "discord", "discord.ext.commands", "dotenv.load_dotenv" and first party import "database.init_db"  (wrong-import-order)
+main.py:8:0: C0411: third party import "flask.Flask" should be placed before first party import "database.init_db"  (wrong-import-order)
+************* Module models
+models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+models.py:64:0: R0902: Too many instance attributes (14/7) (too-many-instance-attributes)
+models.py:82:0: R0902: Too many instance attributes (20/7) (too-many-instance-attributes)
+models.py:124:8: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+models.py:117:4: R0911: Too many return statements (7/6) (too-many-return-statements)
+************* Module utils
+utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+utils.py:81:19: W0621: Redefining name 'date' from outer scope (line 1) (redefined-outer-name)
+utils.py:102:24: W0622: Redefining built-in 'type' (redefined-builtin)
+utils.py:113:29: W0622: Redefining built-in 'type' (redefined-builtin)
+utils.py:120:24: W0622: Redefining built-in 'type' (redefined-builtin)
+utils.py:127:4: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+utils.py:125:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+************* Module cogs.guessing_game
+cogs\guessing_game.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\guessing_game.py:23:67: W0613: Unused argument 'button' (unused-argument)
+cogs\guessing_game.py:32:4: E0213: Method 'cancel_button' should have "self" as first argument (no-self-argument)
+cogs\guessing_game.py:32:72: W0613: Unused argument 'button' (unused-argument)
+cogs\guessing_game.py:43:4: W0221: Number of parameters was 0 in 'Modal.on_submit' and is now 2 in overriding 'RangeInputModal.on_submit' method (arguments-differ)
+cogs\guessing_game.py:87:27: W3101: Missing timeout argument for method 'requests.get' can cause your program to hang indefinitely (missing-timeout)
+cogs\guessing_game.py:3:0: C0411: standard import "random" should be placed before third party import "discord" (wrong-import-order)
+************* Module cogs.activities
+cogs\activities.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+************* Module cogs.add_activity
+cogs\add_activity.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\add_activity.py:34:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'AddActivityView.interaction_check' method (arguments-differ)
+cogs\add_activity.py:67:4: W0221: Number of parameters was 0 in 'Modal.on_submit' and is now 2 in overriding 'CoreInputModal.on_submit' method (arguments-differ)
+cogs\add_activity.py:96:71: W0613: Unused argument 'button' (unused-argument)
+cogs\add_activity.py:137:4: W0221: Number of parameters was 0 in 'Modal.on_submit' and is now 2 in overriding 'DataInputModal.on_submit' method (arguments-differ)
+cogs\add_activity.py:137:4: R0912: Too many branches (15/12) (too-many-branches)
+cogs\add_activity.py:215:74: W0613: Unused argument 'button' (unused-argument)
+cogs\add_activity.py:253:4: W0221: Number of parameters was 0 in 'Modal.on_submit' and is now 2 in overriding 'DetailsInputModal.on_submit' method (arguments-differ)
+cogs\add_activity.py:286:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'ActivityTypeSelectView.interaction_check' method (arguments-differ)
+cogs\add_activity.py:321:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'RPEView.interaction_check' method (arguments-differ)
+cogs\add_activity.py:356:35: R1714: Consider merging these comparisons with 'in' by using 'eq.sport in (activity.sport, Sport.ALL)'. Use a set instead if elements are hashable. (consider-using-in)
+cogs\add_activity.py:368:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'EquipmentSelectView.interaction_check' method (arguments-differ)
+cogs\add_activity.py:8:0: C0411: standard import "typing.List" should be placed before third party imports "discord", "discord.app_commands", "discord.ext.commands", "discord.ui.View" (wrong-import-order)
+************* Module cogs.add_equipment
+cogs\add_equipment.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\add_equipment.py:31:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'SelectSportView.interaction_check' method (arguments-differ)
+cogs\add_equipment.py:58:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'EquipmentTypeSelectView.interaction_check' method (arguments-differ)
+cogs\add_equipment.py:89:4: W0221: Number of parameters was 0 in 'Modal.on_submit' and is now 2 in overriding 'EquipmentDetailsModal.on_submit' method (arguments-differ)
+************* Module cogs.delete_activity
+cogs\delete_activity.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\delete_activity.py:15:41: W0613: Unused argument 'button' (unused-argument)
+cogs\delete_activity.py:24:40: W0613: Unused argument 'button' (unused-argument)
+************* Module cogs.delete_equipment
+cogs\delete_equipment.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\delete_equipment.py:16:41: W0613: Unused argument 'button' (unused-argument)
+cogs\delete_equipment.py:25:40: W0613: Unused argument 'button' (unused-argument)
+cogs\delete_equipment.py:33:40: W0613: Unused argument 'button' (unused-argument)
+************* Module cogs.equipment
+cogs\equipment.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\equipment.py:66:4: W0221: Number of parameters was 0 in 'View.interaction_check' and is now 2 in overriding 'GetEquipmentsView.interaction_check' method (arguments-differ)
+************* Module cogs.retire_equipment
+cogs\retire_equipment.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\retire_equipment.py:16:41: W0613: Unused argument 'button' (unused-argument)
+cogs\retire_equipment.py:25:40: W0613: Unused argument 'button' (unused-argument)
+************* Module cogs.unretire_equipment
+cogs\unretire_equipment.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\unretire_equipment.py:16:41: W0613: Unused argument 'button' (unused-argument)
+cogs\unretire_equipment.py:25:40: W0613: Unused argument 'button' (unused-argument)
+************* Module cogs.quickadd
+cogs\quickadd.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\quickadd.py:13:4: R0914: Too many local variables (17/15) (too-many-locals)
+cogs\quickadd.py:82:15: W0718: Catching too general exception Exception (broad-exception-caught)
+cogs\quickadd.py:59:42: R1721: Unnecessary use of a comprehension, use list(valid_equipment) instead. (unnecessary-comprehension)
+cogs\quickadd.py:90:4: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+cogs\quickadd.py:126:19: W0718: Catching too general exception Exception (broad-exception-caught)
+************* Module cogs.reports
+cogs\reports.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+************* Module cogs.leaderboards
+cogs\leaderboards.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\leaderboards.py:29:4: R0914: Too many local variables (17/15) (too-many-locals)
+cogs\leaderboards.py:54:8: C0206: Consider iterating with .items() (consider-using-dict-items)
+cogs\leaderboards.py:84:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+cogs\leaderboards.py:113:15: W0718: Catching too general exception Exception (broad-exception-caught)
+************* Module cogs.strava
+cogs\strava.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cogs\strava.py:48:15: W0718: Catching too general exception Exception (broad-exception-caught)
+cogs\strava.py:26:23: W3101: Missing timeout argument for method 'requests.post' can cause your program to hang indefinitely (missing-timeout)
+cogs\strava.py:70:19: W3101: Missing timeout argument for method 'requests.post' can cause your program to hang indefinitely (missing-timeout)
+cogs\strava.py:128:19: W3101: Missing timeout argument for method 'requests.get' can cause your program to hang indefinitely (missing-timeout)
+************* Module tests.test_utils
+tests\test_utils.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests\test_utils.py:40:8: C0415: Import outside toplevel (datetime.time) (import-outside-toplevel)
+tests\test_utils.py:59:8: W0621: Redefining name 'timedelta' from outer scope (line 2) (redefined-outer-name)
+tests\test_utils.py:59:8: W0621: Redefining name 'date' from outer scope (line 2) (redefined-outer-name)
+tests\test_utils.py:58:8: C0415: Import outside toplevel (models.Activity) (import-outside-toplevel)
+tests\test_utils.py:59:8: W0404: Reimport 'timedelta' (imported line 2) (reimported)
+tests\test_utils.py:59:8: W0404: Reimport 'date' (imported line 2) (reimported)
+tests\test_utils.py:59:8: C0415: Import outside toplevel (datetime.timedelta, datetime.date, datetime.time) (import-outside-toplevel)
+************* Module tests.test_models
+tests\test_models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests\test_models.py:3:0: W0611: Unused ActivityType imported from models (unused-import)
+************* Module tests.test_database
+tests\test_database.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.add_activity:[17:36]
+==cogs.add_equipment:[14:33]
+        super().__init__()
+        self.ctx = ctx
+
+        for sport in Sport:
+            if sport == Sport.ALL:
+                continue
+
+            self.add_item(
+                Button(
+                    label=sport.value.capitalize(),
+                    style=SPORT_BUTTON_STYLE[sport],
+                    emoji=SPORT_EMOJI[sport],
+                    custom_id=f"sport_{sport.value}",
+                )
+            )
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        sport_value = interaction.data["custom_id"].split("_")[1]
+        sport = Sport(sport_value) (duplicate-code)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.delete_equipment:[43:55]
+==cogs.retire_equipment:[34:46]
+        options = []
+        for equipment in equipments:
+            label = f"{equipment.name} ({equipment.type.value})"
+            description = f"{equipment.model} - {equipment.distance_used}km ({format_duration(equipment.time_used)}, {equipment.times_used} times)"
+            options.append(
+                discord.SelectOption(
+                    label=label,
+                    value=str(equipment.id),
+                    description=description
+                )
+            )
+        super().__init__( (duplicate-code)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.delete_equipment:[46:55]
+==cogs.unretire_equipment:[37:46]
+            description = f"{equipment.model} - {equipment.distance_used}km ({format_duration(equipment.time_used)}, {equipment.times_used} times)"
+            options.append(
+                discord.SelectOption(
+                    label=label,
+                    value=str(equipment.id),
+                    description=description
+                )
+            )
+        super().__init__( (duplicate-code)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.add_activity:[24:34]
+==cogs.equipment:[16:26]
+            self.add_item(
+                Button(
+                    label=sport.value.capitalize(),
+                    style=SPORT_BUTTON_STYLE[sport],
+                    emoji=SPORT_EMOJI[sport],
+                    custom_id=f"sport_{sport.value}",
+                )
+            )
+
+    def build_embed(self, user_id, sport: Sport, button_style: discord.ButtonStyle): (duplicate-code)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.delete_equipment:[56:64]
+==cogs.retire_equipment:[47:55]
+            options=options,
+            min_values=1,
+            max_values=1
+        )
+
+    async def callback(self, interaction: Interaction):
+        equipment_id = int(self.values[0])
+        await interaction.response.send_message( (duplicate-code)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.delete_equipment:[33:41]
+==cogs.retire_equipment:[16:25]
+        retire_equipment(self.equipment_id)
+        await interaction.response.edit_message(
+            content="✅ Equipment retired.",
+            view=None
+        )
+        self.stop()
+
+    @discord.ui.button(label="❌ Cancel", style=discord.ButtonStyle.grey)
+    async def cancel(self, interaction, button): (duplicate-code)
+tests\test_database.py:1:0: R0801: Similar lines in 2 files
+==cogs.activities:[16:23]
+==cogs.equipment:[26:33]
+        color_mapping = {
+            discord.ButtonStyle.grey: discord.Color.light_grey(),
+            discord.ButtonStyle.blurple: discord.Color.blurple(),
+            discord.ButtonStyle.green: discord.Color.green(),
+            discord.ButtonStyle.red: discord.Color.red()
+        }
+ (duplicate-code)
+
+------------------------------------------------------------------
+Your code has been rated at 9.31/10 (previous run: 9.31/10, +0.00)
+

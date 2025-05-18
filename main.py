@@ -9,14 +9,18 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
     return "Bot is running!"
 
+
 def run_flask():
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
 
+
 threading.Thread(target=run_flask).start()
+
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -29,6 +33,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 init_db()
+
 
 @bot.event
 async def on_ready():
@@ -54,6 +59,7 @@ async def load():
     await bot.load_extension('cogs.reports')
     await bot.load_extension('cogs.leaderboards')
     await bot.load_extension('cogs.strava')
+
 
 if __name__ == '__main__':
     import asyncio

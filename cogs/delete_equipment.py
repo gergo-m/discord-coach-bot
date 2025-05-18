@@ -38,6 +38,7 @@ class ConfirmDeleteView(discord.ui.View):
         )
         self.stop()
 
+
 class DeleteEquipmentSelect(Select):
     def __init__(self, equipments):
         options = []
@@ -66,10 +67,12 @@ class DeleteEquipmentSelect(Select):
             ephemeral=True
         )
 
+
 class DeleteEquipmentView(discord.ui.View):
     def __init__(self, equipments):
         super().__init__(timeout=30)
         self.add_item(DeleteEquipmentSelect(equipments))
+
 
 class DeleteEquipment(commands.Cog):
     def __init__(self, bot):
@@ -93,6 +96,6 @@ class DeleteEquipment(commands.Cog):
             ephemeral=True
         )
 
+
 async def setup(bot):
     await bot.add_cog(DeleteEquipment(bot))
-

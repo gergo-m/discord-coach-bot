@@ -29,6 +29,7 @@ class ConfirmUnretireView(View):
         )
         self.stop()
 
+
 class UnretireEquipmentSelect(Select):
     def __init__(self, equipments):
         options = []
@@ -57,10 +58,12 @@ class UnretireEquipmentSelect(Select):
             ephemeral=True
         )
 
+
 class UnretireEquipmentView(View):
     def __init__(self, equipments):
         super().__init__(timeout=30)
         self.add_item(UnretireEquipmentSelect(equipments))
+
 
 class UnretireEquipment(commands.Cog):
     def __init__(self, bot):
@@ -87,4 +90,3 @@ class UnretireEquipment(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(UnretireEquipment(bot))
-

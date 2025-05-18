@@ -14,6 +14,7 @@ def get_week_range(year, week):
     end = start + timedelta(days=6)
     return start, end
 
+
 def get_month_range(year, month):
     start = date(year, month, 1)
     if month == 12:
@@ -21,6 +22,7 @@ def get_month_range(year, month):
     else:
         end = date(year, month + 1, 1) - timedelta(days=1)
     return start, end
+
 
 class Reports(commands.Cog):
     def __init__(self, bot):
@@ -115,6 +117,7 @@ class Reports(commands.Cog):
         embed.add_field(name="Great job in activities like...", value=activity_list, inline=False)
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(Reports(bot))

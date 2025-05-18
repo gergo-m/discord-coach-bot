@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, date
 
 from models import Sport, ActivityType, EquipmentType, SportEmoji, SportButtonStyle
 
+
 SPORT_EMOJI = {
     Sport.ALL: SportEmoji.ALL.value,
     Sport.SWIM: SportEmoji.SWIM.value,
@@ -28,9 +29,11 @@ STRAVA_TO_SPORT = {
     "run": Sport.RUN
 }
 
+
 def format_distance(distance, sport: Sport):
     distance_str = f"{int(distance)}m" if sport == Sport.SWIM else f"{distance}km"
     return distance_str
+
 
 def parse_timedelta(duration_str: str) -> timedelta:
     """Convert 'HH:MM:SS' string to timedelta"""
@@ -38,6 +41,7 @@ def parse_timedelta(duration_str: str) -> timedelta:
         return timedelta()
     hours, minutes, seconds = map(int, duration_str.split(':'))
     return timedelta(hours=hours, minutes=minutes, seconds=seconds)
+
 
 def safe_parse_timedelta(time_str: str) -> timedelta:
     try:
@@ -50,12 +54,14 @@ def safe_parse_timedelta(time_str: str) -> timedelta:
     except (ValueError, AttributeError):
         return timedelta()
 
+
 def format_timedelta(td: timedelta) -> str:
     """Convert timedelta to 'HH:MM:SS' string"""
     total_seconds = int(td.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     return f"{hours:02}:{minutes:02}:{seconds:02}"
+
 
 def format_duration(duration: timedelta, put_seconds: bool = True) -> str:
     total_seconds = duration.total_seconds()
@@ -71,8 +77,10 @@ def format_duration(duration: timedelta, put_seconds: bool = True) -> str:
         parts.append(f"{seconds}s")
     return " ".join(parts) if parts else "0m"
 
+
 def date_to_string(date):
     return date.isoformat()
+
 
 def date_from_string(date_str: str | None) -> date | None:
     if not date_str:
@@ -82,11 +90,14 @@ def date_from_string(date_str: str | None) -> date | None:
     except (ValueError, TypeError):
         return None
 
+
 def start_time_to_string(start_time):
     return start_time.strftime("%H:%M")
 
+
 def start_time_from_string(start_time_str):
     return datetime.strptime(start_time_str, "%H:%M").time()
+
 
 def is_type_appropriate(type: ActivityType, ch_sport: Sport):
     has_sport = False
@@ -98,15 +109,18 @@ def is_type_appropriate(type: ActivityType, ch_sport: Sport):
                 has_spec_sport = True
     return has_spec_sport or not has_sport
 
+
 def is_equipment_appropriate(type: EquipmentType, sport: Sport):
     matches_sport = False
     if sport.name.lower() in type.name.lower():
         matches_sport = True
     return matches_sport
 
+
 def get_type_with_sport(type: ActivityType, sport: Sport, capitalize: bool):
     result = type.value.replace("activity", sport.value)
     return result.title() if capitalize else result
+
 
 def format_pace_speed(activity, put_prefix: bool = True) -> str:
     output = f"**Avg {SPORT_PACE_NAME[activity.sport].capitalize()}:** " if put_prefix else ""

@@ -5,8 +5,7 @@ from discord.ui import View, Button
 
 from database import get_equipments
 from models import Sport
-from utils import format_distance, format_duration, date_to_string, date_from_string, format_timedelta, SPORT_EMOJI, \
-    SPORT_BUTTON_STYLE
+from utils import format_duration, date_to_string, SPORT_EMOJI, SPORT_BUTTON_STYLE
 
 
 class GetEquipmentsView(View):
@@ -66,11 +65,11 @@ class GetEquipmentsView(View):
 
     async def interaction_check(self, interaction: discord.Interaction):
         sport_value = interaction.data["custom_id"].split("_")[1]
-        button_style = interaction
         sport = Sport(sport_value)
         embed = self.build_embed(interaction.user.id, sport, discord.ButtonStyle.blurple)
         await interaction.response.send_message(embed=embed, ephemeral=True)
         return False
+
 
 class Equipments(commands.Cog):
     def __init__(self, bot):
@@ -84,6 +83,7 @@ class Equipments(commands.Cog):
             view=view,
             ephemeral=True
         )
+
 
 async def setup(bot):
     await bot.add_cog(Equipments(bot))

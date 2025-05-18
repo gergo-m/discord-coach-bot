@@ -1,5 +1,5 @@
 import shlex
-from datetime import datetime, timedelta, time, date
+from datetime import datetime, timedelta, date
 from discord.ext import commands
 from models import Sport, Activity, Equipment, ActivityType, EquipmentType
 from database import add_activity, add_equipment, get_equipment_by_id
@@ -84,6 +84,7 @@ class QuickAdd(commands.Cog):
                            "!quickadd activity sport=run date=2025-05-01 start=07:30 title=\"Morning Run\" type=workout distance=10.0 elevation_gain=50 duration=00:45:00 rpe=7\n"
                            "!quickadd equipment name=\"Speedo\" model=\"Fastskin\" sport=swim type=goggles")
 
+
 def parsed_duration(duration_str: str) -> timedelta:
     parts = list(map(int, duration_str.split(':')))
     if len(parts) == 3:  # HH:MM:SS
@@ -91,6 +92,7 @@ def parsed_duration(duration_str: str) -> timedelta:
     elif len(parts) == 2:  # MM:SS
         return timedelta(minutes=parts[0], seconds=parts[1])
     raise ValueError("Invalid duration format")
+
 
 class BulkAdd(commands.Cog):
     def __init__(self, bot):
@@ -124,6 +126,7 @@ class BulkAdd(commands.Cog):
             except Exception as e:
                 results.append(f"❌ Line {i}: {e}")
         await ctx.send("\n".join(results[:10]) + ("\n...and more." if len(results) > 20 else ""))
+
 
 async def setup(bot):
     await bot.add_cog(QuickAdd(bot))

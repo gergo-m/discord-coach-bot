@@ -2,9 +2,9 @@ import sqlite3
 from typing import List
 
 from models import Activity, Sport, ActivityType, Equipment, EquipmentType, StravaToken
-from datetime import time, timedelta, datetime
+from datetime import timedelta, datetime
 from utils import start_time_to_string, date_to_string, date_from_string, start_time_from_string, format_timedelta, \
-    parse_timedelta, safe_parse_timedelta
+    safe_parse_timedelta
 
 
 def init_db():
@@ -66,6 +66,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 def add_activity(activity: Activity):
     conn = sqlite3.connect('discord_bot.db')
     try:
@@ -93,7 +94,7 @@ def add_activity(activity: Activity):
                             ?, ?, ?,
                             ?, ?, ?, ?,
                             ?, ?)''',
-                (
+                  (
                     activity.user_id,
                     activity.sport.value,
                     date_str,
@@ -112,7 +113,7 @@ def add_activity(activity: Activity):
                     activity.feelings,
                     created_at_str,
                     updated_at_str
-                ))
+                  ))
         activity_id = c.lastrowid
         for equipment in activity.equipment_used:
             c.execute('''INSERT INTO activity_equipment (activity_id, equipment_id)
@@ -137,6 +138,7 @@ def add_activity(activity: Activity):
         conn.commit()
     finally:
         conn.close()
+
 
 def get_activities(user_id=None, sport=None, start_date=None, end_date=None):
     conn = sqlite3.connect("discord_bot.db")
@@ -234,6 +236,7 @@ def get_activities(user_id=None, sport=None, start_date=None, end_date=None):
     finally:
         conn.close()
 
+
 def delete_activity(activity_id: int):
     conn = sqlite3.connect("discord_bot.db")
     try:
@@ -302,6 +305,7 @@ def delete_activity(activity_id: int):
     finally:
         conn.close()
 
+
 def add_equipment(equipment: Equipment):
     conn = sqlite3.connect('discord_bot.db')
     try:
@@ -324,7 +328,7 @@ def add_equipment(equipment: Equipment):
                     VALUES (?, ?, ?, ?, ?,
                             ?, ?, ?, ?,
                             ?, ?, ?, ?)''',
-                (
+                  (
                     equipment.user_id,
                     equipment.name,
                     equipment.model,
@@ -338,7 +342,7 @@ def add_equipment(equipment: Equipment):
                     retired_on_str,
                     added_at_str,
                     updated_at_str
-                ))
+                  ))
         conn.commit()
     finally:
         conn.close()
@@ -419,6 +423,7 @@ def get_equipment_by_id(equipment_id: int, user_id: int) -> Equipment | None:
     finally:
         conn.close()
 
+
 def delete_equipment(equipment_id: int):
     conn = sqlite3.connect("discord_bot.db")
     try:
@@ -488,6 +493,7 @@ def delete_equipment(equipment_id: int):
     finally:
         conn.close()
 
+
 def retire_equipment(equipment_id: int):
     conn = sqlite3.connect("discord_bot.db")
     try:
@@ -504,6 +510,7 @@ def retire_equipment(equipment_id: int):
         conn.commit()
     finally:
         conn.close()
+
 
 def add_strava_token(token: StravaToken):
     conn = sqlite3.connect("discord_bot.db")
@@ -527,6 +534,7 @@ def add_strava_token(token: StravaToken):
         conn.commit()
     finally:
         conn.close()
+
 
 def get_strava_token(user_id: int) -> StravaToken | None:
     conn = sqlite3.connect("discord_bot.db")

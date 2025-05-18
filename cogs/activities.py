@@ -1,11 +1,9 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands import bot
 from discord.ui import View, Button
-from discord import app_commands, Interaction
-
-from database import get_activities, delete_activity
-from models import Sport, Activity, SportEmoji
+from discord import app_commands
+from database import get_activities
+from models import Sport, SportEmoji
 from utils import format_distance, start_time_to_string, date_to_string, get_type_with_sport, format_duration, \
     SPORT_EMOJI, format_pace_speed
 
@@ -97,6 +95,7 @@ class GetActivitiesView(View):
         embed = self.build_embed(interaction.user.id, Sport.RUN, button.style)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+
 class Activities(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -109,6 +108,7 @@ class Activities(commands.Cog):
             view=view,
             ephemeral=True
         )
+
 
 async def setup(bot):
     await bot.add_cog(Activities(bot))

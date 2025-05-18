@@ -12,17 +12,20 @@ class Sport(Enum):
     BIKE = "bike"
     RUN = "run"
 
+
 class SportEmoji(Enum):
     ALL = "📚"
     SWIM = "🏊"
     BIKE = "🚴‍♂️"
     RUN = "🏃"
 
+
 class SportButtonStyle(Enum):
     ALL = discord.ButtonStyle.grey
     SWIM = discord.ButtonStyle.blurple
     BIKE = discord.ButtonStyle.green
     RUN = discord.ButtonStyle.red
+
 
 class ActivityType(Enum):
     TRAINING = "training"
@@ -34,6 +37,7 @@ class ActivityType(Enum):
     COMMUTE = "activity commute"
     OPEN_WATER_SWIM = "open water activity"
     POOL_SWIM = "pool activity"
+
 
 class EquipmentType(Enum):
     SWIM_GOGGLES = "goggles"
@@ -48,6 +52,7 @@ class EquipmentType(Enum):
     MTB_BIKE = "mountain bike"
     RUN_SHOES = "running shoes"
     RUN_WATCH = "running watch"
+
 
 class PaceUnit(Enum):
     SWIM = "/100m"
@@ -119,17 +124,18 @@ class Activity:
         if self.sport == Sport.SWIM:
             if self.distance <= 0:
                 return 0.0
-            return total_seconds / (self.distance / 100) / 60 # min/100m
+            return total_seconds / (self.distance / 100) / 60  # min/100m
         elif self.sport == Sport.RUN:
             if self.distance <= 0:
                 return 0.0
-            return total_seconds / self.distance / 60 # min/km
+            return total_seconds / self.distance / 60  # min/km
         elif self.sport == Sport.BIKE:
             if total_seconds <= 0:
                 return 0.0
             hours = total_seconds / 3600
-            return self.distance / hours # km/h
+            return self.distance / hours  # km/h
         return 0.0
+
 
 @dataclass
 class StravaToken:

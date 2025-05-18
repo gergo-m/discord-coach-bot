@@ -29,6 +29,7 @@ class ConfirmRetireView(View):
         )
         self.stop()
 
+
 class RetireEquipmentSelect(Select):
     def __init__(self, equipments):
         options = []
@@ -57,10 +58,12 @@ class RetireEquipmentSelect(Select):
             ephemeral=True
         )
 
+
 class RetireEquipmentView(View):
     def __init__(self, equipments):
         super().__init__(timeout=30)
         self.add_item(RetireEquipmentSelect(equipments))
+
 
 class RetireEquipment(commands.Cog):
     def __init__(self, bot):
@@ -87,4 +90,3 @@ class RetireEquipment(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(RetireEquipment(bot))
-

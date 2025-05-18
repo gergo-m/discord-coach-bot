@@ -3,9 +3,8 @@ from datetime import datetime, timedelta
 
 import discord.ui
 import requests
-from discord import app_commands, Interaction, ButtonStyle, Embed
+from discord import app_commands, Interaction, ButtonStyle
 from discord.ext import commands
-from discord.types.embed import EmbedMedia
 
 from cogs.add_activity import activity_saved_embed
 from database import get_strava_token, add_activity, add_strava_token
@@ -20,7 +19,6 @@ class Strava(commands.Cog):
         self.client_secret = os.getenv('STRAVA_CLIENT_SECRET')
         self.redirect_uri = os.getenv('STRAVA_REDIRECT_URI')
 
-    # Add to Strava class in strava.py
     @commands.command()
     async def strava_auth(self, ctx, link: str):
         code = link.split('&')[1][5:]
@@ -135,11 +133,13 @@ class Strava(commands.Cog):
             return response.json()
         return None
 
+
 class SyncActivitiesView(discord.ui.View):
     def __init__(self, activities):
         super().__init__()
         for activity in activities[:5]:
             self.add_item(SyncActivityButton(activity))
+
 
 class SyncActivityButton(discord.ui.Button):
     def __init__(self, activity):
@@ -179,11 +179,6 @@ class SyncActivityButton(discord.ui.Button):
             description=strava_activity['description'] if 'description' in strava_activity else "",
         )
 
-    def create_activity_embed(self, activity):
-        embed = Embed(
-            title=activity.title,
-            description=activity.description
-        )
 
 async def setup(bot):
     await bot.add_cog(Strava(bot))
